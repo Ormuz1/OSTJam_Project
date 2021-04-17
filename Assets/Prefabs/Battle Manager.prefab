@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1443154682310521096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1443154682310521098}
+  - component: {fileID: 1443154682310521099}
+  m_Layer: 0
+  m_Name: Battle Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1443154682310521098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443154682310521096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1443154682310521099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443154682310521096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84120a31eb5d3e640b0565ba89456be2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alliesRow: {x: 5.57, y: 0.55, z: -2.33}
+  enemyFrontRow: {x: 5.57, y: 0.55, z: 4.31}
+  allies:
+  - {fileID: 4572093031714464092, guid: d68f28e5da7cc0c41b14ef4cf6539f8c, type: 3}
+  - {fileID: 4572093031714464092, guid: 63c43b9ac10b30d4b9ae54e3a2606bd0, type: 3}
+  - {fileID: 4572093031714464092, guid: 63c43b9ac10b30d4b9ae54e3a2606bd0, type: 3}
+  allyInstances: []
+  enemies:
+  - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
+  - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
+  - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
+  enemyInstances: []
+  activeUnit: {fileID: 0}
+  spaceBetweenAllies: {x: 2, y: 0, z: 0}
+  spaceBetweenEnemies: {x: 2, y: 0, z: 0}
+  selectedAction: 0
+  menu: {fileID: 0}
+  activeUnitCursor: {fileID: 3285759456804804035, guid: 34f7e9f3f5f34ad4ab04da1560075ef1, type: 3}

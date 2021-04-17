@@ -2,86 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.Events;
+using System;
+using UnityEngine.UI;
 
-[System.Serializable]
-public class MenuItem
-{
-    public string text;
-    public UnityEvent onSelected;
-}
-
-[System.Serializable]
-public class SubMenu
-{
-    public string name;
-    public float itemSpacing;
-    public Color textColor;
-    public Color activeTextColor;
-    public int fontSize;
-    public int columns, rows;
-    public MenuItem[] items;
-    [HideInInspector] public int activeItemIndex = 0;
-    [HideInInspector] public int MaxItemLength {
-        get 
-        {
-            int[] textSizes = new int[items.Length];
-            for (int i = 0; i < items.Length; i++)
-            {
-                textSizes[i] = items[i].text.Length;
-            }
-            int max = textSizes[0];
-            for(int i = 1; i < items.Length; i++)
-            {
-                max = textSizes[i] > max ? textSizes[i] : max;
-            }
-            return max;
-        }
-    }
-}
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private SubMenu[] submenus;
-    private SubMenu activeSubmenu;
+    private UnitActions[] commands;
     [SerializeField] private RectTransform menuTransform;
-    [SerializeField] private RectTransform[] actions;
-    [SerializeField] private Vector2 cursorOffset;
-    [SerializeField] private float cursorScale;
-    [SerializeField] private Texture2D cursorTexture;
-    private int index = 0;
-    private Rect cursorRect;
-    public void Awake()
-    {
-        // FillMenu(submenus[0]);
-        CalculateCursorPosition();
-    }
+    [SerializeField] int fontSize;
 
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.S) && index < actions.Length -1)
-        {
-            index++;
-            CalculateCursorPosition();
-        }
-        else if(Input.GetKeyDown(KeyCode.W) && index > 0)
-        {
-            index--;
-            CalculateCursorPosition();
-        }
-    }
+    [Header("Cursor Properties:")]
+    [SerializeField] private Texture2D cursorTexture;
+    [SerializeField] private float cursorScale;
+    [SerializeField] private Vector2 cursorOffset;
+    private Rect cursorRect;
+    private bool isMenuDrawn = false;
+    [HideInInspector] public int selectedAction;
+    private bool drawCursorForTheFirstTime = true;
     private void OnGUI() 
     {
-        GUI.DrawTexture(cursorRect, cursorTexture);
+        if(drawCursorForTheFirstTime)
+        {
+            if(Event.current.type == EventType.Repaint)
+            {
+                CalculateCursorPosition();
+                drawCursorForTheFirstTime = false;
+            }
+        }
+        if(isMenuDrawn)
+        {
+            GUI.DrawTexture(cursorRect, cursorTexture);
+        }
     }
 
-    private void CalculateCursorPosition()
+
+    public void CalculateCursorPosition()
     {
-        Vector2 actionPosition = actions[index].anchoredPosition;
-        Rect actionRect = actions[index].rect;
+        List<RectTransform> actions = new List<RectTransform>();
+        menuTransform.GetComponentsInChildren<RectTransform>(actions);
+        actions.Remove(menuTransform);
+        RectTransform actionRect = actions[selectedAction];
         Vector2 cursorPosition = new Vector2(
-            actionPosition.x - cursorTexture.width * cursorScale,
-            Screen.height - (actionPosition.y + actionRect.height)
-        );
+            actionRect.position.x - cursorTexture.width * cursorScale,
+            (Screen.height - actionRect.position.y) + cursorTexture.height * .5f
+            ) + cursorOffset;
         cursorRect = new Rect(
             cursorPosition,
             new Vector2(cursorTexture.width, cursorTexture.height) * cursorScale
@@ -89,34 +54,34 @@ public class MenuManager : MonoBehaviour
     }
 
     
-    private void FillMenu(SubMenu submenu)
+    public void FillMenu(UnitCommand[] commands)
     {
-        TextMeshProUGUI item = null;
-        Vector3[] menuCorners = new Vector3[4];
-        menuTransform.GetLocalCorners(menuCorners);
-        for(int i = 0; i < submenu.items.Length; i++)
+        menuTransform.gameObject.SetActive(true);
+        int childrenToDestroy  = menuTransform.childCount;
+        for(int i = 0; i < childrenToDestroy; i++)
         {
-            item = Instantiate(new GameObject(submenu.items[i].text), menuTransform).AddComponent<TextMeshProUGUI>();
+            Destroy(menuTransform.GetChild(i).gameObject);
+        }
+        for(int i = 0; i < commands.Length; i++)
+        {
+            TextMeshProUGUI item;
+            GameObject itemObject = new GameObject(commands[i].action.GetActionName());
+            itemObject.transform.parent = menuTransform; 
+            item = itemObject.AddComponent<TextMeshProUGUI>();
             item.rectTransform.pivot = new Vector2(0, 1);
-            item.rectTransform.localPosition = menuCorners[1] - Vector3.up * (item.rectTransform.rect.height * i);
-            item.text = submenu.items[i].text;
-            item.fontSize = submenu.fontSize;
+            item.text = commands[i].action.GetActionName();
+            item.fontSize = fontSize;
             item.color = Color.black;
         }
-        
+        selectedAction = 0;
+        CalculateCursorPosition();
+        isMenuDrawn = true;
     }
-/* 
-    public override void Awake() 
+
+
+    public void SetMenuActive(bool state)
     {
-        base.Awake();
-        currentMenu = menus[0]; 
-        for(int i = 0; i < currentMenu.items.Length; i++)
-        {
-            TextMeshProUGUI newText = GameObject.Create;
-            newText.SetText(currentMenu.items[i].text);
-            newText.transform.position = currentMenu.position *
-            
-        }   
+        menuTransform.gameObject.SetActive(state);
+        isMenuDrawn = state;
     }
- */
 }
