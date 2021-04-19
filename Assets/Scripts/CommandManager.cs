@@ -5,20 +5,14 @@ using System;
 using System.Linq;
 
 public enum BattleState {SelectingCommand, SelectingTarget}
-public class BattleManager : SingletonBase<BattleManager>
+public class CommandManager : SingletonBase<CommandManager>
 {
-    [SerializeField] private Vector3 alliesRow;
-    [SerializeField] private Vector3 enemyFrontRow;
-    public Unit[] allies;
     [HideInInspector] public Unit[] allyInstances;
-    public Unit[] enemies;
     [HideInInspector] public Unit[] enemyInstances;
     [HideInInspector] public Unit activeUnit;
-    [SerializeField] private Vector3 spaceBetweenAllies;
-    [SerializeField] private Vector3 spaceBetweenEnemies;
 
     [HideInInspector] public int selectedAction;
-    [SerializeField] private GameObject activeUnitCursor;
+    [SerializeField] private UnitCursor unitCursor;
     private Unit commandTarget = null;
     private BattleState battleState;
 
@@ -27,7 +21,8 @@ public class BattleManager : SingletonBase<BattleManager>
         allyInstances = UnitManager.Instance.allies;
         enemyInstances = UnitManager.Instance.currentEnemies;
         SetActiveUnit();
-        activeUnitCursor = Instantiate(activeUnitCursor, activeUnit.transform.position + Vector3.up * 1, Quaternion.identity);
+        unitCursor = Instantiate(unitCursor) as UnitCursor;
+        unitCursor.FollowNewUnit(activeUnit);
         battleState = BattleState.SelectingCommand;
     }
 
@@ -36,7 +31,7 @@ public class BattleManager : SingletonBase<BattleManager>
     {
         if(battleState == BattleState.SelectingCommand)
         {
-            if(!activeUnit || activeUnit.state == UnitStates.Busy)
+            if(!activeUnit || activeUnit.state == UnitStates.CannotAction)
             {
                 MenuManager.Instance.SetMenuActive(false);
                 SetActiveUnit();
@@ -47,7 +42,7 @@ public class BattleManager : SingletonBase<BattleManager>
                 {
                     if(activeUnit.commands[selectedAction].action.RequiresTarget())
                     {
-                        StartCoroutine(SelectCommandTarget(enemyInstances.Concat(allyInstances).ToArray()));
+                        StartCoroutine(SelectCommandTarget(activeUnit.commands[selectedAction].action.GetTargetPool()));
                     }
                     else
                     {
@@ -74,18 +69,18 @@ public class BattleManager : SingletonBase<BattleManager>
     {
         for(int i = 0; i < allyInstances.Length; i++)
         {
-            if(allyInstances[i].state == UnitStates.Idle)
+            if(allyInstances[i].state == UnitStates.CanAction)
             {
                 activeUnit = allyInstances[i];
                 selectedAction = 0;
                 MenuManager.Instance.FillMenu(activeUnit);
-                activeUnitCursor.SetActive(true);
-                activeUnitCursor.transform.position = activeUnit.transform.position + Vector3.up * 1;
+                unitCursor.gameObject.SetActive(true);
+                unitCursor.FollowNewUnit(activeUnit);
                 return;
             }
         }
         activeUnit = null;
-        activeUnitCursor.SetActive(false);
+        unitCursor.gameObject.SetActive(false);
     }
 
     public IEnumerator SelectCommandTarget(Unit[] targetPool)
@@ -93,7 +88,7 @@ public class BattleManager : SingletonBase<BattleManager>
         MenuManager.Instance.SetMenuActive(false);
         battleState = BattleState.SelectingTarget;
         int selectedTarget = 0;
-        activeUnitCursor.transform.position = targetPool[selectedTarget].transform.position + Vector3.up * 1;
+        unitCursor.FollowNewUnit(targetPool[selectedTarget]); 
         yield return null;
         while(!Input.GetKeyDown(KeyCode.Space))
         {
@@ -107,12 +102,12 @@ public class BattleManager : SingletonBase<BattleManager>
             else if(Input.GetKeyDown(KeyCode.S) && selectedTarget < targetPool.Length - 1)
             {
                 selectedTarget++;
-                activeUnitCursor.transform.position = targetPool[selectedTarget].transform.position + Vector3.up * 1;
+                unitCursor.FollowNewUnit(targetPool[selectedTarget]);
             }
             else if(Input.GetKeyDown(KeyCode.W) && selectedTarget > 0)
             {
                 selectedTarget--;
-                activeUnitCursor.transform.position = targetPool[selectedTarget].transform.position + Vector3.up * 1;
+                unitCursor.FollowNewUnit(targetPool[selectedTarget]);
             }
             yield return null;
         }

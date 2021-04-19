@@ -17,7 +17,9 @@ public class MenuManager : SingletonBase<MenuManager>
     [SerializeField] private float cursorScale;
     [SerializeField] private Vector2 cursorOffset;
     [SerializeField] private RectTransform lifeBarsHolder;
+    [SerializeField] private Slider lifebarPrefab;
     private Slider[] lifeBars;
+    
     private Rect cursorRect;
     private bool isMenuDrawn = false;
     [HideInInspector] public int selectedAction;
@@ -25,13 +27,9 @@ public class MenuManager : SingletonBase<MenuManager>
 
     public void Start()
     {
-        lifeBars = lifeBarsHolder.GetComponentsInChildren<Slider>();
-        for(int i = 0; i < UnitManager.Instance.allies.Length; i++)
-        { 
-            UnitManager.Instance.allies[i].healthBar = lifeBars[i];
-            lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
-        }
+        DrawLifebars();
     }
+    
     private void OnGUI() 
     {
         if(drawCursorForTheFirstTime)
@@ -75,7 +73,22 @@ public class MenuManager : SingletonBase<MenuManager>
         );
     }
 
-    
+    public void DrawLifebars()
+    {
+        int childrenToDestroy = lifeBarsHolder.childCount;
+        for(int i = 0; i < childrenToDestroy; i++)
+        {
+            Destroy(lifeBarsHolder.GetChild(i).gameObject);
+        }
+        int childrenToCreate = UnitManager.Instance.allies.Length;
+        lifeBars = new Slider[childrenToCreate];
+        for(int i = 0; i < childrenToCreate; i++)
+        {
+            lifeBars[i] = Instantiate(lifebarPrefab, lifeBarsHolder) as Slider;
+            UnitManager.Instance.allies[i].healthBar = lifeBars[i];
+            lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
+        }
+    }
     public void FillMenu(Unit unit)
     {
         UnitCommand[] commands = unit.commands;

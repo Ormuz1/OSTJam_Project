@@ -20,4 +20,16 @@ public static class Extentions
 
         return actionsThatRequireTargets.Contains(action);
     }
+    public static Unit[] GetTargetPool(this UnitActions action)
+    {
+        switch(action)
+        {
+            case UnitActions.Heal:
+                return UnitManager.Instance.allies.Concat(UnitManager.Instance.enemies).ToArray();
+            case UnitActions.Attack:
+                return UnitManager.Instance.enemies.Concat(UnitManager.Instance.allies).ToArray();
+            default:
+                return null;
+        }
+    }
 }
