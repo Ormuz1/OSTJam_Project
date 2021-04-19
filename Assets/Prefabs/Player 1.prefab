@@ -108,11 +108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5474f0f3ee2c0c4699eb164dd88f7e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 120
+  health: 0
+  damage: 10
+  unitName: Test
   state: 0
-  unitData:
-    health: 100
-    damage: 10
-    slideSpeed: 3
   actions:
   - action: 0
     duration: 2

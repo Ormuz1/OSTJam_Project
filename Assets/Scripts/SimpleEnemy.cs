@@ -9,7 +9,7 @@ public class SimpleEnemy : Unit
     private int currentInstruction = 0;
     private BattleManager battleManager;
 
-    private void Awake()
+    protected void Start()
     {
         battleManager = FindObjectOfType<BattleManager>();
     }
@@ -17,6 +17,7 @@ public class SimpleEnemy : Unit
     {
         if(state == UnitStates.Idle)
         {
+            Debug.Log("Enemy Attacking");
             ExecuteAction(enemyInstructions[currentInstruction], battleManager.allyInstances[Random.Range(0, battleManager.allyInstances.Length)]);
             currentInstruction = currentInstruction + 1 < enemyInstructions.Length ? currentInstruction + 1 : 0;
         }

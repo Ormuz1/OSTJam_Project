@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Linq;
 
 public enum BattleState {SelectingCommand, SelectingTarget}
-public class BattleManager : MonoBehaviour
+public class BattleManager : SingletonBase<BattleManager>
 {
     [SerializeField] private Vector3 alliesRow;
     [SerializeField] private Vector3 enemyFrontRow;
@@ -17,15 +18,14 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Vector3 spaceBetweenEnemies;
 
     [HideInInspector] public int selectedAction;
-    [SerializeField] private MenuManager menu;
     [SerializeField] private GameObject activeUnitCursor;
     private Unit commandTarget = null;
     private BattleState battleState;
 
-    public void Awake()
+    public void Start()
     {
-        allyInstances = InstantiateUnits(allies, alliesRow, spaceBetweenAllies);
-        enemyInstances = InstantiateUnits(enemies, enemyFrontRow, spaceBetweenEnemies);
+        allyInstances = UnitManager.Instance.allies;
+        enemyInstances = UnitManager.Instance.currentEnemies;
         SetActiveUnit();
         activeUnitCursor = Instantiate(activeUnitCursor, activeUnit.transform.position + Vector3.up * 1, Quaternion.identity);
         battleState = BattleState.SelectingCommand;
@@ -38,57 +38,37 @@ public class BattleManager : MonoBehaviour
         {
             if(!activeUnit || activeUnit.state == UnitStates.Busy)
             {
-                menu.SetMenuActive(false);
+                MenuManager.Instance.SetMenuActive(false);
                 SetActiveUnit();
             }
             else
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if(activeUnit.actions[selectedAction].action.RequiresTarget())
+                    if(activeUnit.commands[selectedAction].action.RequiresTarget())
                     {
                         StartCoroutine(SelectCommandTarget(enemyInstances.Concat(allyInstances).ToArray()));
                     }
                     else
                     {
-                        activeUnit.ExecuteAction(activeUnit.actions[selectedAction]);
+                        activeUnit.ExecuteAction(activeUnit.commands[selectedAction]);
                     }
                 }
-                else if(Input.GetKeyDown(KeyCode.S) && selectedAction < activeUnit.actions.Length -1)
+                else if(Input.GetKeyDown(KeyCode.S) && selectedAction < activeUnit.commands.Length -1)
                 {
                     selectedAction++;
-                    menu.selectedAction = selectedAction;
-                    menu.CalculateCursorPosition();
+                    MenuManager.Instance.selectedAction = selectedAction;
+                    MenuManager.Instance.CalculateCursorPosition();
                 }
                 else if(Input.GetKeyDown(KeyCode.W) && selectedAction > 0)
                 {
                     selectedAction--;
-                    menu.selectedAction = selectedAction;
-                    menu.CalculateCursorPosition();
+                    MenuManager.Instance.selectedAction = selectedAction;
+                    MenuManager.Instance.CalculateCursorPosition();
                 }
             }
         }
     }
-
-    private Unit[] InstantiateUnits(Unit[] units, Vector3 centerPoint, Vector3 spaceBetweenUnits)
-    {
-        Unit[] unitInstances = new Unit[units.Length];
-        for (int i = 0; i < units.Length; i++)
-        {
-        
-            Vector3 newUnitPosition = new Vector3(
-                (centerPoint.x + spaceBetweenUnits.x * i) - spaceBetweenUnits.x * units.Length * 0.5f + spaceBetweenUnits.x * 0.5f,
-                (centerPoint.y + spaceBetweenUnits.y * i) - spaceBetweenUnits.y * units.Length * 0.5f + spaceBetweenUnits.y * 0.5f,
-                (centerPoint.z + spaceBetweenUnits.z * i) - spaceBetweenUnits.z * units.Length * 0.5f + spaceBetweenUnits.z * 0.5f
-            );
-            Unit unitInstance = Instantiate(units[i], newUnitPosition, Quaternion.identity) as Unit;
-            Debug.Log(newUnitPosition);
-            unitInstance.transform.parent = transform;
-            unitInstances[i] = unitInstance;
-        }
-        return unitInstances;
-    }
-
 
     private void SetActiveUnit()
     {
@@ -98,7 +78,7 @@ public class BattleManager : MonoBehaviour
             {
                 activeUnit = allyInstances[i];
                 selectedAction = 0;
-                menu.FillMenu(activeUnit.actions);
+                MenuManager.Instance.FillMenu(activeUnit);
                 activeUnitCursor.SetActive(true);
                 activeUnitCursor.transform.position = activeUnit.transform.position + Vector3.up * 1;
                 return;
@@ -110,7 +90,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator SelectCommandTarget(Unit[] targetPool)
     {
-        menu.SetMenuActive(false);
+        MenuManager.Instance.SetMenuActive(false);
         battleState = BattleState.SelectingTarget;
         int selectedTarget = 0;
         activeUnitCursor.transform.position = targetPool[selectedTarget].transform.position + Vector3.up * 1;
@@ -120,7 +100,7 @@ public class BattleManager : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 commandTarget = null;
-                menu.SetMenuActive(true);
+                MenuManager.Instance.SetMenuActive(true);
                 battleState = BattleState.SelectingCommand;
                 yield break;
             }
@@ -138,7 +118,7 @@ public class BattleManager : MonoBehaviour
         }
         battleState = BattleState.SelectingCommand;
         commandTarget = targetPool[selectedTarget];
-        menu.SetMenuActive(true);
-        activeUnit.ExecuteAction(activeUnit.actions[selectedAction], commandTarget);
+        MenuManager.Instance.SetMenuActive(true);
+        activeUnit.ExecuteAction(activeUnit.commands[selectedAction], commandTarget);
     }
 }

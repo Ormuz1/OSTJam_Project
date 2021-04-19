@@ -108,13 +108,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233e82b778db7454396b5a3f095db008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 120
+  health: 0
+  damage: 10
+  unitName: 
   state: 0
-  unitData:
-    health: 100
-    damage: 10
-  actions: []
+  commands: []
+  healthBar: {fileID: 0}
   enemyInstructions:
   - action: 0
-    duration: 3
-  - action: 1
     duration: 3

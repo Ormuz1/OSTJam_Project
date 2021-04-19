@@ -4,9 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using System.Linq;
 
-
-public class MenuManager : MonoBehaviour
+public class MenuManager : SingletonBase<MenuManager>
 {
     private UnitActions[] commands;
     [SerializeField] private RectTransform menuTransform;
@@ -16,10 +16,22 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private float cursorScale;
     [SerializeField] private Vector2 cursorOffset;
+    [SerializeField] private RectTransform lifeBarsHolder;
+    private Slider[] lifeBars;
     private Rect cursorRect;
     private bool isMenuDrawn = false;
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
+
+    public void Start()
+    {
+        lifeBars = lifeBarsHolder.GetComponentsInChildren<Slider>();
+        for(int i = 0; i < UnitManager.Instance.allies.Length; i++)
+        { 
+            UnitManager.Instance.allies[i].healthBar = lifeBars[i];
+            lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
+        }
+    }
     private void OnGUI() 
     {
         if(drawCursorForTheFirstTime)
@@ -33,6 +45,16 @@ public class MenuManager : MonoBehaviour
         if(isMenuDrawn)
         {
             GUI.DrawTexture(cursorRect, cursorTexture);
+        }
+    }
+
+
+    public void UpdateLifeBar(Unit unit)
+    {
+        if(unit.healthBar)
+        {
+            unit.healthBar.value = (float)unit.health / unit.maxHealth;
+            Debug.Log(unit.health);
         }
     }
 
@@ -54,8 +76,9 @@ public class MenuManager : MonoBehaviour
     }
 
     
-    public void FillMenu(UnitCommand[] commands)
+    public void FillMenu(Unit unit)
     {
+        UnitCommand[] commands = unit.commands;
         menuTransform.gameObject.SetActive(true);
         int childrenToDestroy  = menuTransform.childCount;
         for(int i = 0; i < childrenToDestroy; i++)
