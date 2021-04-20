@@ -108,13 +108,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233e82b778db7454396b5a3f095db008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 120
+  maxHealth: 1
   health: 0
   damage: 10
-  unitName: 
+  unitName: Skeleton
   state: 0
-  commands: []
-  healthBar: {fileID: 0}
-  enemyInstructions:
+  commands:
   - action: 0
-    duration: 3
+    duration: 1
+  lifeBar: {fileID: 0}
+  enemyInstructions:
+  - command:
+      action: 0
+      duration: 2
+    timeToExecute: 3

@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class UnitCursor : MonoBehaviour
 {
-    private Unit followUnit;
+    [SerializeField] private Unit followUnit;
     [SerializeField] private Vector3 offset;
     private void Update() 
     {
-        transform.position = followUnit.transform.position + offset;
+        if(followUnit)
+            transform.position = followUnit.transform.position + offset;
+        else
+            gameObject.SetActive(false);
     }
 
     public void FollowNewUnit(Unit unit)

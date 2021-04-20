@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public enum UnitStates { CanAction, CannotAction, InterruptAction}
-public enum UnitActions { Attack, Heal, StopHealing}
+public enum UnitActions { Attack, Heal, Stop}
 
 [System.Serializable]
 public class UnitCommand
 {
     public UnitActions action;
     public float duration;
+
+    public UnitCommand(UnitActions action, float duration)
+    {
+        this.action = action;
+        this.duration = duration;
+    }
 }
 
 public class Unit : MonoBehaviour
@@ -20,10 +27,10 @@ public class Unit : MonoBehaviour
 
     public int damage;
     public string unitName;
-    [HideInInspector] public UnitStates state = UnitStates.CanAction;
+    [HideInInspector] public UnitStates state;
     public UnitCommand[] commands;
     private const float attackTargetDistance = -1.2f;
-    [HideInInspector] public UnityEngine.UI.Slider healthBar;
+    [HideInInspector] public UnityEngine.UI.Slider lifeBar;
 
     protected virtual void Awake() 
     {
@@ -32,7 +39,7 @@ public class Unit : MonoBehaviour
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
     {
-        Debug.Log("Executing Action");
+        state = UnitStates.CannotAction;
         switch(command.action)
         {
             case UnitActions.Attack:
@@ -41,9 +48,25 @@ public class Unit : MonoBehaviour
             case UnitActions.Heal:
                 StartCoroutine(CommandCoroutines.StartHealing(this, commandTarget));
                 break;
-            case UnitActions.StopHealing:
+            case UnitActions.Stop:
                 state = UnitStates.InterruptAction;
                 break; 
         }
+    }
+
+    public void OnHealthChanged()
+    {
+        if(lifeBar)
+        {
+            lifeBar.value = (float)health / maxHealth;
+        }
+        if(health < 0)
+        {
+            OnDeath();
+        }
+    }
+
+    protected virtual void OnDeath()
+    {
     }
 }

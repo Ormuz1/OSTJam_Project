@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-public static class Extentions
+public static class UnitActionsExtentions
 {
     
     public static string GetActionName(this UnitActions action)
@@ -25,9 +25,9 @@ public static class Extentions
         switch(action)
         {
             case UnitActions.Heal:
-                return UnitManager.Instance.allies.Concat(UnitManager.Instance.enemies).ToArray();
+                return UnitManager.Instance.allies.Concat(UnitManager.Instance.currentEnemies).ToArray();
             case UnitActions.Attack:
-                return UnitManager.Instance.enemies.Concat(UnitManager.Instance.allies).ToArray();
+                return UnitManager.Instance.currentEnemies.Concat(UnitManager.Instance.allies).ToArray();
             default:
                 return null;
         }

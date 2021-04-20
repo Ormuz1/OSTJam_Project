@@ -25,11 +25,10 @@ public class MenuManager : SingletonBase<MenuManager>
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
 
-    public void Start()
+    private void Start() 
     {
         DrawLifebars();
     }
-    
     private void OnGUI() 
     {
         if(drawCursorForTheFirstTime)
@@ -43,16 +42,6 @@ public class MenuManager : SingletonBase<MenuManager>
         if(isMenuDrawn)
         {
             GUI.DrawTexture(cursorRect, cursorTexture);
-        }
-    }
-
-
-    public void UpdateLifeBar(Unit unit)
-    {
-        if(unit.healthBar)
-        {
-            unit.healthBar.value = (float)unit.health / unit.maxHealth;
-            Debug.Log(unit.health);
         }
     }
 
@@ -85,7 +74,7 @@ public class MenuManager : SingletonBase<MenuManager>
         for(int i = 0; i < childrenToCreate; i++)
         {
             lifeBars[i] = Instantiate(lifebarPrefab, lifeBarsHolder) as Slider;
-            UnitManager.Instance.allies[i].healthBar = lifeBars[i];
+            UnitManager.Instance.allies[i].lifeBar = lifeBars[i];
             lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
         }
     }

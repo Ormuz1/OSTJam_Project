@@ -4,32 +4,42 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public enum BattleState {SelectingCommand, SelectingTarget}
+public enum CommandMenuState {SelectingCommand, SelectingTarget}
 public class CommandManager : SingletonBase<CommandManager>
 {
     [HideInInspector] public Unit[] allyInstances;
     [HideInInspector] public Unit[] enemyInstances;
     [HideInInspector] public Unit activeUnit;
-
     [HideInInspector] public int selectedAction;
     [SerializeField] private UnitCursor unitCursor;
     private Unit commandTarget = null;
-    private BattleState battleState;
+    private CommandMenuState commandMenuState;
 
-    public void Start()
+    public override void Awake()
     {
+        base.Awake();
+        unitCursor = Instantiate(unitCursor) as UnitCursor;
+    }
+
+    private void Start() 
+    {
+        ResetCommandMenu();    
+    }
+
+    public void ResetCommandMenu()
+    {
+        StopAllCoroutines();
         allyInstances = UnitManager.Instance.allies;
         enemyInstances = UnitManager.Instance.currentEnemies;
         SetActiveUnit();
-        unitCursor = Instantiate(unitCursor) as UnitCursor;
+        unitCursor.gameObject.SetActive(true);
         unitCursor.FollowNewUnit(activeUnit);
-        battleState = BattleState.SelectingCommand;
+        commandMenuState = CommandMenuState.SelectingCommand;
     }
-
 
     private void Update() 
     {
-        if(battleState == BattleState.SelectingCommand)
+        if(commandMenuState == CommandMenuState.SelectingCommand)
         {
             if(!activeUnit || activeUnit.state == UnitStates.CannotAction)
             {
@@ -86,17 +96,18 @@ public class CommandManager : SingletonBase<CommandManager>
     public IEnumerator SelectCommandTarget(Unit[] targetPool)
     {
         MenuManager.Instance.SetMenuActive(false);
-        battleState = BattleState.SelectingTarget;
+        commandMenuState = CommandMenuState.SelectingTarget;
         int selectedTarget = 0;
         unitCursor.FollowNewUnit(targetPool[selectedTarget]); 
-        yield return null;
+        yield return null;        
         while(!Input.GetKeyDown(KeyCode.Space))
         {
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 commandTarget = null;
                 MenuManager.Instance.SetMenuActive(true);
-                battleState = BattleState.SelectingCommand;
+                unitCursor.FollowNewUnit(activeUnit);
+                commandMenuState = CommandMenuState.SelectingCommand;
                 yield break;
             }
             else if(Input.GetKeyDown(KeyCode.S) && selectedTarget < targetPool.Length - 1)
@@ -111,7 +122,7 @@ public class CommandManager : SingletonBase<CommandManager>
             }
             yield return null;
         }
-        battleState = BattleState.SelectingCommand;
+        commandMenuState = CommandMenuState.SelectingCommand;
         commandTarget = targetPool[selectedTarget];
         MenuManager.Instance.SetMenuActive(true);
         activeUnit.ExecuteAction(activeUnit.commands[selectedAction], commandTarget);
