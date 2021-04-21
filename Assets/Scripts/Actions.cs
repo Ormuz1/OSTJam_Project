@@ -25,7 +25,7 @@ public static class CommandCoroutines
             {
                 timer = 0;
                 target.health = Mathf.Min(target.health + 10, target.maxHealth);
-                target.OnHealthChanged();
+                target.OnHealthChanged(-10);
             }
             yield return null;
         }
@@ -42,7 +42,7 @@ public static class CommandCoroutines
         origin.state = UnitStates.CannotAction;
         yield return MoveToPosition(origin, origin.transform.position + forwardMovement, moveTime);
         target.health -= origin.damage;
-        target.OnHealthChanged();
+        target.OnHealthChanged(origin.damage);
         yield return new WaitForSeconds(duration * 0.1f);
         yield return MoveToPosition(origin, startPosition, moveTime);
         origin.state = UnitStates.CanAction;
@@ -60,6 +60,5 @@ public static class CommandCoroutines
             origin.transform.position = Vector3.Lerp(startPosition, target, t);
             yield return null;
         }
-        Debug.Log("Done moving");
     }
 }

@@ -14,11 +14,17 @@ public class SimpleEnemy : Unit
     [SerializeField] private EnemyInstruction[] enemyInstructions;
     private int currentInstruction = 0;
     private float commandTimer = 0;
-
+    private bool shouldDrawTimer = true;
     private void Update() 
     {
         if(state == UnitStates.CanAction)
         {
+            if(shouldDrawTimer)
+            {
+                MenuManager.Instance.DrawRadialTimer(enemyInstructions[currentInstruction].timeToExecute, this);
+                shouldDrawTimer = false;
+            }
+
             if(commandTimer < enemyInstructions[currentInstruction].timeToExecute)
             {
                 commandTimer += Time.deltaTime;
@@ -28,6 +34,7 @@ public class SimpleEnemy : Unit
                 ExecuteAction(enemyInstructions[currentInstruction].command, UnitManager.Instance.allies[Random.Range(0, UnitManager.Instance.allies.Length)]);
                 currentInstruction = currentInstruction + 1 < enemyInstructions.Length ? currentInstruction + 1 : 0;
                 commandTimer = 0;
+                shouldDrawTimer = true;
             }
         }
     }

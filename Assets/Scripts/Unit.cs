@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
-
+using System.Linq;
+using System.Reflection;
 public enum UnitStates { CanAction, CannotAction, InterruptAction}
 public enum UnitActions { Attack, Heal, Stop}
 
@@ -24,17 +25,17 @@ public class Unit : MonoBehaviour
 {
     public int maxHealth;
     [HideInInspector] public int health;
-
     public int damage;
     public string unitName;
     [HideInInspector] public UnitStates state;
     public UnitCommand[] commands;
     private const float attackTargetDistance = -1.2f;
     [HideInInspector] public UnityEngine.UI.Slider lifeBar;
-
+    public Bounds meshBounds;
     protected virtual void Awake() 
     {
         health = maxHealth;
+        meshBounds = GetComponent<MeshRenderer>().bounds; 
     }
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
@@ -54,8 +55,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void OnHealthChanged()
+    public void OnHealthChanged(int amount)
     {
+        MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
         if(lifeBar)
         {
             lifeBar.value = (float)health / maxHealth;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SingletonBase<T> : MonoBehaviour where T : Component
+public abstract class SingletonBase<T> : MonoBehaviour where T : Component
 {
     private static T instance;
     public static T Instance 

@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 4556567203358031829}
   - component: {fileID: 4556567203358031830}
   m_Layer: 5
-  m_Name: Battle GUI
+  m_Name: Menu Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,13 +374,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c1834f14ab4674bbc394dacc66b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuTransform: {fileID: 4556567203081060151}
+  commandMenuTransform: {fileID: 4556567203081060151}
   fontSize: 72
   cursorTexture: {fileID: 2800000, guid: bf0b266da60148b4c8da8d650e76c4af, type: 3}
   cursorScale: 3
   cursorOffset: {x: 0, y: 0}
   lifeBarsHolder: {fileID: 7411749645957053405}
   lifebarPrefab: {fileID: 5670465035744308878, guid: f948cfd5beea5744ca06df623886a431, type: 3}
+  popupTextPrefab: {fileID: -1541429735644579094, guid: 199ec3a46706e2b45b33690b753bd56a, type: 3}
+  radialTimerPrefab: {fileID: 43557982, guid: cd94b4780ae61c74085d4f2aabedf58b, type: 3}
   selectedAction: 0
 --- !u!1 &4556567203945579723
 GameObject:

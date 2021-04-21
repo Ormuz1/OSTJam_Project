@@ -9,7 +9,7 @@ using System.Linq;
 public class MenuManager : SingletonBase<MenuManager>
 {
     private UnitActions[] commands;
-    [SerializeField] private RectTransform menuTransform;
+    [SerializeField] private RectTransform commandMenuTransform;
     [SerializeField] int fontSize;
 
     [Header("Cursor Properties:")]
@@ -18,10 +18,20 @@ public class MenuManager : SingletonBase<MenuManager>
     [SerializeField] private Vector2 cursorOffset;
     [SerializeField] private RectTransform lifeBarsHolder;
     [SerializeField] private Slider lifebarPrefab;
+    [SerializeField] private PopupText popupTextPrefab;
     private Slider[] lifeBars;
     
     private Rect cursorRect;
     private bool isMenuDrawn = false;
+    [SerializeField] private ActionTimer radialTimerPrefab;
+    internal void DrawRadialTimer(float duration, Unit unit)
+    {
+        ActionTimer radialTimer = Instantiate(radialTimerPrefab, transform) as ActionTimer;
+        radialTimer.duration = duration;
+        Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
+        radialTimer.GetComponent<RectTransform>().position = unitScreenCorners[1] + unit.meshBounds.size * 1.5f;
+    }
+
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
 
@@ -49,8 +59,8 @@ public class MenuManager : SingletonBase<MenuManager>
     public void CalculateCursorPosition()
     {
         List<RectTransform> actions = new List<RectTransform>();
-        menuTransform.GetComponentsInChildren<RectTransform>(actions);
-        actions.Remove(menuTransform);
+        commandMenuTransform.GetComponentsInChildren<RectTransform>(actions);
+        actions.Remove(commandMenuTransform);
         RectTransform actionRect = actions[selectedAction];
         Vector2 cursorPosition = new Vector2(
             actionRect.position.x - cursorTexture.width * cursorScale,
@@ -81,32 +91,36 @@ public class MenuManager : SingletonBase<MenuManager>
     public void FillMenu(Unit unit)
     {
         UnitCommand[] commands = unit.commands;
-        menuTransform.gameObject.SetActive(true);
-        int childrenToDestroy  = menuTransform.childCount;
+        commandMenuTransform.gameObject.SetActive(true);
+        int childrenToDestroy  = commandMenuTransform.childCount;
         for(int i = 0; i < childrenToDestroy; i++)
         {
-            Destroy(menuTransform.GetChild(i).gameObject);
+            Destroy(commandMenuTransform.GetChild(i).gameObject);
         }
         for(int i = 0; i < commands.Length; i++)
         {
             TextMeshProUGUI item;
             GameObject itemObject = new GameObject(commands[i].action.GetActionName());
-            itemObject.transform.parent = menuTransform; 
+            itemObject.transform.parent = commandMenuTransform; 
             item = itemObject.AddComponent<TextMeshProUGUI>();
             item.rectTransform.pivot = new Vector2(0, 1);
             item.text = commands[i].action.GetActionName();
             item.fontSize = fontSize;
-            item.color = Color.black;
+            item.color = Color.white;
         }
         selectedAction = 0;
         CalculateCursorPosition();
         isMenuDrawn = true;
     }
 
-
+    public void CreatePopupText(Vector3 position, int value)
+    {
+        PopupText popupText = Instantiate(popupTextPrefab, position, Quaternion.identity) as PopupText;
+        popupText.Setup(value);
+    }
     public void SetMenuActive(bool state)
     {
-        menuTransform.gameObject.SetActive(state);
+        commandMenuTransform.gameObject.SetActive(state);
         isMenuDrawn = state;
     }
 }
