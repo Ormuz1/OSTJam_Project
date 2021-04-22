@@ -23,14 +23,7 @@ public class MenuManager : SingletonBase<MenuManager>
     
     private Rect cursorRect;
     private bool isMenuDrawn = false;
-    [SerializeField] private ActionTimer radialTimerPrefab;
-    internal void DrawRadialTimer(float duration, Unit unit)
-    {
-        ActionTimer radialTimer = Instantiate(radialTimerPrefab, transform) as ActionTimer;
-        radialTimer.duration = duration;
-        Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
-        radialTimer.GetComponent<RectTransform>().position = unitScreenCorners[1] + unit.meshBounds.size * 1.5f;
-    }
+    [SerializeField] private RadialTimer radialTimerPrefab;
 
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
@@ -88,7 +81,19 @@ public class MenuManager : SingletonBase<MenuManager>
             lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
         }
     }
-    public void FillMenu(Unit unit)
+
+
+    internal void DrawRadialTimer(float duration, Unit unit)
+    {
+        RadialTimer radialTimer = Instantiate(radialTimerPrefab, transform) as RadialTimer;
+        radialTimer.duration = duration;
+        Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
+        radialTimer.GetComponent<RectTransform>().position = unitScreenCorners[1] + unit.meshBounds.size * 1.5f;
+        unit.currentRadialTimer = radialTimer;
+    }
+
+
+    public void FillMenu(Ally unit)
     {
         UnitCommand[] commands = unit.commands;
         commandMenuTransform.gameObject.SetActive(true);
@@ -113,11 +118,16 @@ public class MenuManager : SingletonBase<MenuManager>
         isMenuDrawn = true;
     }
 
+
     public void CreatePopupText(Vector3 position, int value)
     {
-        PopupText popupText = Instantiate(popupTextPrefab, position, Quaternion.identity) as PopupText;
+        PopupText popupText = Instantiate(popupTextPrefab, position, Quaternion.identity, transform) as PopupText;
+        popupText.transform.SetSiblingIndex(0);     // Draw it in front of other UI elements
+
         popupText.Setup(value);
     }
+
+
     public void SetMenuActive(bool state)
     {
         commandMenuTransform.gameObject.SetActive(state);

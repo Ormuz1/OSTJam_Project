@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public enum BattleState {Active, Transitioning}
 public class UnitManager : SingletonBase<UnitManager>
 {
@@ -17,18 +17,18 @@ public class UnitManager : SingletonBase<UnitManager>
 
     [SerializeField] private Vector3 alliesStartingPoint;
     [SerializeField] private Vector3 enemyFrontRow;
-    [SerializeField] private Encounter[] enemyEncounters;
-    private int currentEncounter = 0;
-    public Unit[] currentEnemies;
     [SerializeField] private Vector3 spaceBetweenAllies;
     [SerializeField] private Vector3 spaceBetweenEnemies;
-    public Unit[] allies;
+    public Ally[] allies;
+    [SerializeField] private Encounter[] enemyEncounters;
+    private int currentEncounter = 0;
+    [HideInInspector] public Unit[] currentEnemies;
     private readonly Vector3 spaceBetweenEncounters = new Vector3(0, 0, 10);
 
     public override void Awake()
     {
         base.Awake();
-        allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies);
+        allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies).Select(parent => parent as Ally).ToArray();
         currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow, spaceBetweenEnemies);
     }
 

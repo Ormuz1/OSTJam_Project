@@ -65,3 +65,32 @@ public static class BoundsExtentions
         return new Vector3[4] {topLeft, topRight, bottomRight, bottomLeft};
     }
 }
+
+public static class UnitExtentions
+{
+    public static Unit GetLowestHealth(this Unit[] units)
+    {
+        Unit result = units[0];
+        for(int i = 1; i < units.Length; i++)
+        {
+            if(units[i].health < result.health)
+            {
+                result = units[i];
+            }
+        }
+        return result;
+    }
+
+    public static Unit GetHighestHealth(this Unit[] units)
+    {
+        Unit result = units[0];
+        for(int i = 1; i < units.Length; i++)
+        {
+            if(units[i].health > result.health)
+            {
+                result = units[i];
+            }
+        }
+        return result;
+    }
+}

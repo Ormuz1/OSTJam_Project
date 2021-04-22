@@ -27,11 +27,12 @@ public class Unit : MonoBehaviour
     [HideInInspector] public int health;
     public int damage;
     public string unitName;
+    
     [HideInInspector] public UnitStates state;
-    public UnitCommand[] commands;
     private const float attackTargetDistance = -1.2f;
     [HideInInspector] public UnityEngine.UI.Slider lifeBar;
-    public Bounds meshBounds;
+    [HideInInspector] public Bounds meshBounds;
+    [HideInInspector] public RadialTimer currentRadialTimer;
     protected virtual void Awake() 
     {
         health = maxHealth;
@@ -70,5 +71,6 @@ public class Unit : MonoBehaviour
 
     protected virtual void OnDeath()
     {
+        Destroy(currentRadialTimer.gameObject);
     }
 }

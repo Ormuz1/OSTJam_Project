@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-public class ActionTimer : MonoBehaviour
+public class RadialTimer : MonoBehaviour
 {
     private Image radial;
     public float duration;

@@ -10,11 +10,18 @@ public static class CommandCoroutines
 
     public static IEnumerator StartHealing(Unit origin, Unit target)
     {
-        UnitCommand[] commandCache = origin.commands;
-        UnitCommand stopHealingCommand = new UnitCommand(UnitActions.Stop, 0);
-        origin.commands = new UnitCommand[] {stopHealingCommand};
-        origin.state = UnitStates.CannotAction;
-        yield return null;
+        bool isAlly = origin.GetType() == typeof(Ally);
+        Ally originAsAlly = null;
+        UnitCommand[] commandCache = null;
+        if(isAlly)
+        {
+            originAsAlly = origin as Ally;
+            commandCache = originAsAlly.commands;
+            UnitCommand stopHealingCommand = new UnitCommand(UnitActions.Stop, 0);
+            originAsAlly.commands = new UnitCommand[] {stopHealingCommand};
+            origin.state = UnitStates.CannotAction;
+            yield return null;
+        }
         origin.state = UnitStates.CanAction;
         for(float timer = 0; true; timer += Time.deltaTime)
         {
@@ -29,8 +36,15 @@ public static class CommandCoroutines
             }
             yield return null;
         }
-        origin.commands = commandCache;
-        MenuManager.Instance.FillMenu(origin);
+        if(isAlly)
+        {
+            originAsAlly.commands = commandCache;
+            MenuManager.Instance.FillMenu(originAsAlly);
+        }
+        else
+        {
+            origin.state = UnitStates.CanAction;
+        }
     }
 
 

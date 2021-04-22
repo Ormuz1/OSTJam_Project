@@ -7,9 +7,9 @@ using System.Linq;
 public enum CommandMenuState {SelectingCommand, SelectingTarget}
 public class CommandManager : SingletonBase<CommandManager>
 {
-    [HideInInspector] public Unit[] allyInstances;
+    [HideInInspector] public Ally[] allyInstances;
     [HideInInspector] public Unit[] enemyInstances;
-    [HideInInspector] public Unit activeUnit;
+    [HideInInspector] public Ally activeUnit;
     [HideInInspector] public int selectedAction;
     [SerializeField] private UnitCursor unitCursor;
     private Unit commandTarget = null;
