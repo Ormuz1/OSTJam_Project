@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 public enum UnitStates { CanAction, CannotAction, InterruptAction}
-public enum UnitActions { Attack, Heal, Stop}
 
 [System.Serializable]
 public class UnitCommand
@@ -28,15 +27,21 @@ public class Unit : MonoBehaviour
     public int damage;
     public string unitName;
     
-    [HideInInspector] public UnitStates state;
+    public UnitStates state;
     private const float attackTargetDistance = -1.2f;
     [HideInInspector] public UnityEngine.UI.Slider lifeBar;
     [HideInInspector] public Bounds meshBounds;
     [HideInInspector] public RadialTimer currentRadialTimer;
+    [HideInInspector] public bool isGuarding = false;
     protected virtual void Awake() 
     {
         health = maxHealth;
-        meshBounds = GetComponent<MeshRenderer>().bounds; 
+        var renderers = GetComponentsInChildren<Renderer>();
+        meshBounds = renderers[0].bounds;
+        foreach(Renderer childRenderer in renderers)
+        {
+            meshBounds.Encapsulate(childRenderer.bounds);
+        }
     }
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
@@ -52,12 +57,16 @@ public class Unit : MonoBehaviour
                 break;
             case UnitActions.Stop:
                 state = UnitStates.InterruptAction;
-                break; 
+                break;
+            case UnitActions.Defend:
+                StartCoroutine(CommandCoroutines.Defend(this, command.duration));
+                break;
         }
     }
 
     public void OnHealthChanged(int amount)
     {
+        if(isGuarding) amount /= 2;
         MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
         if(lifeBar)
         {
@@ -71,6 +80,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void OnDeath()
     {
-        Destroy(currentRadialTimer.gameObject);
+        if(currentRadialTimer)
+            Destroy(currentRadialTimer.gameObject);
     }
 }

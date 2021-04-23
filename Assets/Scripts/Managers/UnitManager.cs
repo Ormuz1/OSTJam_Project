@@ -9,6 +9,7 @@ public class UnitManager : SingletonBase<UnitManager>
     private class Encounter
     {
         public Unit[] enemies;
+        public float encounterTime = 10f;
         public Encounter(Unit[] enemies)
         {
             this.enemies = enemies;
@@ -21,15 +22,19 @@ public class UnitManager : SingletonBase<UnitManager>
     [SerializeField] private Vector3 spaceBetweenEnemies;
     public Ally[] allies;
     [SerializeField] private Encounter[] enemyEncounters;
+    [SerializeField] private float timeBetweenEncounters = 5f;
     private int currentEncounter = 0;
     [HideInInspector] public Unit[] currentEnemies;
     private readonly Vector3 spaceBetweenEncounters = new Vector3(0, 0, 10);
+    private CameraFollow cameraFollowScript;
 
     public override void Awake()
     {
         base.Awake();
+        cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
         allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies).Select(parent => parent as Ally).ToArray();
         currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow, spaceBetweenEnemies);
+        TimerManager.Instance.StartTimer(enemyEncounters[currentEncounter].encounterTime);
     }
 
     public Unit[] CreateUnits(Unit[] units, Vector3 centerPoint, Vector3 spaceBetweenUnits, UnitStates startState = UnitStates.CanAction)
@@ -57,21 +62,28 @@ public class UnitManager : SingletonBase<UnitManager>
         if(currentEncounter < enemyEncounters.Length)
         {
             yield return WaitForUnitsIdle(allies);
-            CommandManager.Instance.gameObject.SetActive(false);
+            CommandManager.Instance.DisableCommandMenu();
+            MenuManager.Instance.SetLifeBarMenuActive(false);
             Coroutine lastCoroutine = null;
             for(int i = 0; i < allies.Length; i++)
             {
-                Debug.Log("Running " + i.ToString());
-                lastCoroutine = allies[i].StartCoroutine(CommandCoroutines.MoveToPosition(allies[i], allies[i].transform.position + spaceBetweenEncounters, 5f));
+                lastCoroutine = allies[i].StartCoroutine(CommandCoroutines.MoveToPosition(allies[i], allies[i].transform.position + spaceBetweenEncounters, timeBetweenEncounters));
                 allies[i].state = UnitStates.CannotAction;
             }
+            TimerManager.Instance.StartCoroutine(TimerManager.Instance.RestartTimer(timeBetweenEncounters, enemyEncounters[currentEncounter].encounterTime));
+            cameraFollowScript.isFollowing = true;
             currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow + spaceBetweenEncounters * currentEncounter, spaceBetweenEnemies, UnitStates.CannotAction);
             yield return lastCoroutine;
-            Debug.Log("Player finished moving");
+            for(int i = 0; i < allies.Length; i++)
+            {
+                allies[i].state = UnitStates.CanAction;
+            }
+            cameraFollowScript.isFollowing = false;
             for(int i = 0; i < currentEnemies.Length; i++)
             {
                 currentEnemies[i].state = UnitStates.CanAction;
             }
+            MenuManager.Instance.SetLifeBarMenuActive(true);
             CommandManager.Instance.gameObject.SetActive(true);
             CommandManager.Instance.ResetCommandMenu();
         }

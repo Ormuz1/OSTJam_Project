@@ -45,14 +45,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alliesStartingPoint: {x: 5.57, y: 0.55, z: -2.33}
   enemyFrontRow: {x: 5.57, y: 0.55, z: 4.31}
-  enemyEncounters:
-  - enemies:
-    - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
-  - enemies:
-    - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
-    - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
-  currentEnemies: []
   spaceBetweenAllies: {x: 2, y: 0, z: 0}
   spaceBetweenEnemies: {x: 2, y: 0, z: 0}
   allies:
-  - {fileID: 4572093031714464092, guid: d68f28e5da7cc0c41b14ef4cf6539f8c, type: 3}
+  - {fileID: -8516085314324794119, guid: 03cc406e3040f984c8eab4342ef6c36d, type: 3}
+  enemyEncounters:
+  - enemies:
+    - {fileID: 6143336507801462770, guid: 863cf38e99269a64faaa0449401add13, type: 3}
+    encounterTime: 10
+  - enemies:
+    - {fileID: 6143336507801462770, guid: 863cf38e99269a64faaa0449401add13, type: 3}
+    - {fileID: 6143336507801462770, guid: 863cf38e99269a64faaa0449401add13, type: 3}
+    encounterTime: 10
+  - enemies:
+    - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
+    - {fileID: 6143336507801462770, guid: cec800215e99d7a4e9f1f96488f8dfea, type: 3}
+    encounterTime: 10
+  timeBetweenEncounters: 5
+  currentEnemies: []

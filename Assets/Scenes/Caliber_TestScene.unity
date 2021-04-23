@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 341995764}
   - component: {fileID: 341995763}
   - component: {fileID: 341995762}
+  - component: {fileID: 341995765}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -206,6 +207,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &341995765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341995761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5b131bd75a6a1479bef113289d185f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToReachTarget: 0.2
+  zOffset: 2.83
+  isFollowing: 0
 --- !u!1 &407279109
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,10 +714,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6419105076951667784, guid: 1b6d53d8696252c44b92fd84e12a9be4, type: 3}
-      propertyPath: allies.Array.data[0]
-      value: 
-      objectReference: {fileID: -8516085314324794119, guid: 03cc406e3040f984c8eab4342ef6c36d, type: 3}
     - target: {fileID: 7361436731637394638, guid: 1b6d53d8696252c44b92fd84e12a9be4, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -709,6 +721,12 @@ PrefabInstance:
     - target: {fileID: 7361436731637394638, guid: 1b6d53d8696252c44b92fd84e12a9be4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7746100467432520824, guid: 1b6d53d8696252c44b92fd84e12a9be4, type: 3}
+      propertyPath: m_text
+      value: '10
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 7759613554256187084, guid: 1b6d53d8696252c44b92fd84e12a9be4, type: 3}
       propertyPath: m_AnchorMax.y

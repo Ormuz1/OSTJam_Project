@@ -2,31 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class TimerManager : MonoBehaviour
+using UnityEngine.UI;
+public class TimerManager : SingletonBase<TimerManager>
 {
-    [SerializeField] private float startTime;
     [SerializeField] private TextMeshProUGUI timerText;
-    [HideInInspector] public float timer;
-    public float countdownMultiplier = 1f;
+    [SerializeField] private Image radial;
+    public float countdownSpeedMultiplier = 1f;
+    private float timer;
+    private float startTime;
+    [HideInInspector] public bool isCountingDown;
 
-    private void OnValidate()
+
+    public IEnumerator RestartTimer(float timeToRestart, float newTimerValue)
     {
-        if(timerText != null)
-            SetTimerText((int)startTime);
+        isCountingDown = false;
+        float timerStartValue = timer;
+        for(float loopTimer = 0; loopTimer < timeToRestart; loopTimer += Time.deltaTime)
+        {
+            timer = Mathf.Lerp(timerStartValue, newTimerValue, loopTimer / timeToRestart);
+            radial.fillAmount = timer / newTimerValue;
+            SetTimerText();
+            yield return null;
+        }
+        StartTimer(newTimerValue);
     }
 
-    private void Awake() {
-        timer = startTime;
+
+    public void StartTimer(float newTimerValue)
+    {
+        startTime = newTimerValue;
+        timer = newTimerValue;
+        isCountingDown = true;
     }
 
-    private void SetTimerText(int time)
+
+    private void SetTimerText()
     {
-        timerText.text = time.ToString();
+        timerText.text = ((int)timer + 1).ToString();
     }
 
-    void Update()
+
+    private void Update()
     {
-        timer -= Time.deltaTime * countdownMultiplier;
-        SetTimerText((int)timer);
+        if(isCountingDown)
+        {
+            timer -= Time.deltaTime * countdownSpeedMultiplier;
+            radial.fillAmount = timer / startTime;
+            SetTimerText();
+        }
     }
 }

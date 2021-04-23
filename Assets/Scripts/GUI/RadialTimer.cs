@@ -9,6 +9,7 @@ public class RadialTimer : MonoBehaviour
     public float duration;
     private float timer = 0;
     [SerializeField] private UnityEvent OnFinished;
+    [HideInInspector] public Unit associatedUnit;
     private void Awake() 
     {
         radial = GetComponent<Image>();
@@ -29,6 +30,7 @@ public class RadialTimer : MonoBehaviour
 
     public void DestroyThis()
     {
+        associatedUnit.currentRadialTimer = null;
         Destroy(gameObject);
     }
 }

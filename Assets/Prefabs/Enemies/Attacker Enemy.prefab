@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6713417806097600494}
   - component: {fileID: 6143336507801462770}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Attacker Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,14 +120,8 @@ MonoBehaviour:
   currentRadialTimer: {fileID: 0}
   enemyInstructions:
   - command:
-      action: 1
-      duration: 0
-    target: 2
-    targetPool: 1
-    timeToExecute: 3
-  - command:
-      action: 2
+      action: 0
       duration: 3
-    target: 2
-    targetPool: 1
-    timeToExecute: 3
+    targetPool: 0
+    target: 0
+    timeToExecute: 2.2

@@ -83,13 +83,14 @@ public class MenuManager : SingletonBase<MenuManager>
     }
 
 
-    internal void DrawRadialTimer(float duration, Unit unit)
+    internal RadialTimer DrawRadialTimer(float duration, Unit unit)
     {
         RadialTimer radialTimer = Instantiate(radialTimerPrefab, transform) as RadialTimer;
         radialTimer.duration = duration;
         Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
         radialTimer.GetComponent<RectTransform>().position = unitScreenCorners[1] + unit.meshBounds.size * 1.5f;
-        unit.currentRadialTimer = radialTimer;
+        radialTimer.associatedUnit = unit;
+        return radialTimer;
     }
 
 
@@ -127,6 +128,10 @@ public class MenuManager : SingletonBase<MenuManager>
         popupText.Setup(value);
     }
 
+    public void SetLifeBarMenuActive(bool state)
+    {
+        lifeBarsHolder.parent.gameObject.SetActive(state);
+    }
 
     public void SetMenuActive(bool state)
     {

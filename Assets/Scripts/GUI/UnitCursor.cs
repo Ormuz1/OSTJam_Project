@@ -9,7 +9,7 @@ public class UnitCursor : MonoBehaviour
     private void Update() 
     {
         if(followUnit)
-            transform.position = followUnit.transform.position + offset;
+            transform.position = followUnit.transform.position + offset + Vector3.up * followUnit.meshBounds.size.y;
         else
             gameObject.SetActive(false);
     }

@@ -11,8 +11,8 @@ public class SimpleEnemy : Unit
     protected class EnemyInstruction
     {
         public UnitCommand command;
-        public Target target;
         public TargetPool targetPool;
+        public Target target;
         public float timeToExecute;
     }
     [SerializeField] private EnemyInstruction[] enemyInstructions;
@@ -25,7 +25,7 @@ public class SimpleEnemy : Unit
         {
             if(shouldDrawTimer)
             {
-                MenuManager.Instance.DrawRadialTimer(enemyInstructions[currentInstruction].timeToExecute, this);
+                currentRadialTimer = MenuManager.Instance.DrawRadialTimer(enemyInstructions[currentInstruction].timeToExecute, this);
                 shouldDrawTimer = false;
             }
 
@@ -75,6 +75,8 @@ public class SimpleEnemy : Unit
 
         ExecuteAction(instruction.command, targetUnit);
     }
+
+    
     protected override void OnDeath()
     {
         base.OnDeath();

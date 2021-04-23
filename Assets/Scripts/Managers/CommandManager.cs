@@ -37,6 +37,17 @@ public class CommandManager : SingletonBase<CommandManager>
         commandMenuState = CommandMenuState.SelectingCommand;
     }
 
+
+    public void DisableCommandMenu()
+    {
+        StopAllCoroutines();
+        activeUnit = null;
+        unitCursor.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+        MenuManager.Instance.SetMenuActive(false);
+    }
+
+
     private void Update() 
     {
         if(commandMenuState == CommandMenuState.SelectingCommand)

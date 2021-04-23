@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitActions { Attack, Heal, Defend, Stop}
+
 public static class CommandCoroutines
 {
     private const float timeBetweenHeals = 0.8f;
@@ -47,7 +49,40 @@ public static class CommandCoroutines
         }
     }
 
-
+    public static IEnumerator Defend(Unit origin, float duration)
+    {
+        bool isAlly = origin.GetType() == typeof(Ally);
+        Ally originAsAlly = null;
+        UnitCommand[] commandCache = null;
+        if(isAlly)
+        {
+            originAsAlly = origin as Ally;
+            commandCache = originAsAlly.commands;
+            UnitCommand stopCommand = new UnitCommand(UnitActions.Stop, 0);
+            originAsAlly.commands = new UnitCommand[] {stopCommand};
+            origin.state = UnitStates.CannotAction;
+            yield return null;
+        }
+        origin.state = UnitStates.CanAction;
+        origin.isGuarding = true;
+        for(float timer = 0; true; timer += Time.deltaTime)
+        {
+            if(origin.state == UnitStates.InterruptAction || (!isAlly && timer > duration))
+                break;
+            yield return null;
+        }
+        origin.isGuarding = false;
+        if(isAlly)
+        {
+            originAsAlly.commands = commandCache;
+            MenuManager.Instance.FillMenu(originAsAlly);
+        }
+        else
+        {
+            origin.state = UnitStates.CanAction;
+        }
+    }
+        
     public static IEnumerator Attack(Unit origin, Unit target, float duration)
     {
         float moveTime = duration * 0.9f * 0.5f;
