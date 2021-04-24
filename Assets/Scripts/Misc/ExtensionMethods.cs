@@ -21,15 +21,20 @@ public static class UnitActionsExtentions
     }
     public static Unit[] GetTargetPool(this UnitActions action)
     {
+        Unit[] targetPool;
         switch(action)
         {
             case UnitActions.Heal:
-                return UnitManager.Instance.allies.Concat(UnitManager.Instance.currentEnemies).ToArray();
+                targetPool = UnitManager.Instance.allies.Concat(UnitManager.Instance.currentEnemies).ToArray();
+                break;
             case UnitActions.Attack:
-                return UnitManager.Instance.currentEnemies.Concat(UnitManager.Instance.allies).ToArray();
+                targetPool = UnitManager.Instance.currentEnemies.Concat(UnitManager.Instance.allies).ToArray();
+                break;
             default:
-                return null;
+                targetPool = null;
+                break;
         }
+        return targetPool.Where(unit => unit.state != UnitStates.KnockedOut).ToArray();
     }
 }
 
@@ -73,12 +78,14 @@ public static class UnitExtentions
         Unit result = units[0];
         for(int i = 1; i < units.Length; i++)
         {
-            if(units[i].health < result.health)
+            if(units[i].health < result.health && units[i].CanBeTargeted)
             {
                 result = units[i];
             }
         }
-        return result;
+        if(result.CanBeTargeted)
+            return result;
+        return null;
     }
 
     public static Unit GetHighestHealth(this Unit[] units)
@@ -86,11 +93,13 @@ public static class UnitExtentions
         Unit result = units[0];
         for(int i = 1; i < units.Length; i++)
         {
-            if(units[i].health > result.health)
+            if(units[i].health > result.health && units[i].CanBeTargeted)
             {
                 result = units[i];
             }
         }
-        return result;
+        if(result.CanBeTargeted)
+            return result;
+        return null;
     }
 }

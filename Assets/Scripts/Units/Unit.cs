@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System;
 using System.Linq;
 using System.Reflection;
-public enum UnitStates { CanAction, CannotAction, InterruptAction}
+public enum UnitStates { CanAction, CannotAction, InterruptAction, KnockedOut}
 
 [System.Serializable]
 public class UnitCommand
@@ -29,10 +29,16 @@ public class Unit : MonoBehaviour
     
     public UnitStates state;
     private const float attackTargetDistance = -1.2f;
+    public bool CanBeTargeted { get => state != UnitStates.KnockedOut;}
     [HideInInspector] public UnityEngine.UI.Slider lifeBar;
     [HideInInspector] public Bounds meshBounds;
     [HideInInspector] public RadialTimer currentRadialTimer;
     [HideInInspector] public bool isGuarding = false;
+    public Animator animator;
+    public AnimationClip attackAnimation = null;
+    public AnimationClip runAnimation = null;
+    public AnimationClip idleAnimation = null;
+    public AnimationClip deathAnimation = null;
     protected virtual void Awake() 
     {
         health = maxHealth;
@@ -42,6 +48,7 @@ public class Unit : MonoBehaviour
         {
             meshBounds.Encapsulate(childRenderer.bounds);
         }
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
@@ -61,9 +68,36 @@ public class Unit : MonoBehaviour
             case UnitActions.Defend:
                 StartCoroutine(CommandCoroutines.Defend(this, command.duration));
                 break;
+            case UnitActions.TimeSpeedUp:
+                TimerManager.Instance.countdownSpeedMultiplier += .25f;
+                break;
+        }
+    }
+    
+
+    public void PlayAnimationForAction(UnitActions action, float duration)
+    {
+        AnimationClip selectedAnimation = null;
+        switch(action)
+        {
+            case UnitActions.Attack:
+                selectedAnimation = attackAnimation;
+                break;
+        }
+        if(selectedAnimation != null)
+        {
+            animator.Play(selectedAnimation.name);
+            animator.SetFloat("AnimationSpeed", selectedAnimation.length / duration);
+            StartCoroutine(ResetAnimation(duration));
         }
     }
 
+    public IEnumerator ResetAnimation(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.Play(idleAnimation.name);
+        animator.SetFloat("AnimationSpeed", 1);
+    }
     public void OnHealthChanged(int amount)
     {
         if(isGuarding) amount /= 2;
@@ -72,7 +106,7 @@ public class Unit : MonoBehaviour
         {
             lifeBar.value = (float)health / maxHealth;
         }
-        if(health < 0)
+        if(health <= 0)
         {
             OnDeath();
         }
@@ -83,4 +117,5 @@ public class Unit : MonoBehaviour
         if(currentRadialTimer)
             Destroy(currentRadialTimer.gameObject);
     }
+
 }

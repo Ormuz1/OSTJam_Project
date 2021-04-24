@@ -52,7 +52,7 @@ public class CommandManager : SingletonBase<CommandManager>
     {
         if(commandMenuState == CommandMenuState.SelectingCommand)
         {
-            if(!activeUnit || activeUnit.state == UnitStates.CannotAction)
+            if(!activeUnit || activeUnit.state != UnitStates.CanAction)
             {
                 MenuManager.Instance.SetMenuActive(false);
                 SetActiveUnit();

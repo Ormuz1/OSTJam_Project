@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitActions { Attack, Heal, Defend, Stop}
+public enum UnitActions { Attack, Heal, Defend, Stop, TimeSpeedUp}
 
 public static class CommandCoroutines
 {
@@ -27,7 +27,7 @@ public static class CommandCoroutines
         origin.state = UnitStates.CanAction;
         for(float timer = 0; true; timer += Time.deltaTime)
         {
-            if(origin.state == UnitStates.InterruptAction)
+            if(origin.state == UnitStates.InterruptAction || target == null)
                 break;
 
             if(!(timer < timeBetweenHeals))
@@ -43,11 +43,9 @@ public static class CommandCoroutines
             originAsAlly.commands = commandCache;
             MenuManager.Instance.FillMenu(originAsAlly);
         }
-        else
-        {
-            origin.state = UnitStates.CanAction;
-        }
+        origin.state = UnitStates.CanAction;
     }
+
 
     public static IEnumerator Defend(Unit origin, float duration)
     {
@@ -77,23 +75,18 @@ public static class CommandCoroutines
             originAsAlly.commands = commandCache;
             MenuManager.Instance.FillMenu(originAsAlly);
         }
-        else
-        {
-            origin.state = UnitStates.CanAction;
-        }
+        origin.state = UnitStates.CanAction;
     }
         
+
     public static IEnumerator Attack(Unit origin, Unit target, float duration)
     {
-        float moveTime = duration * 0.9f * 0.5f;
-        Vector3 startPosition = origin.transform.position, velocity = Vector3.zero;
-        Vector3 forwardMovement = Vector3.forward * attackMoveDistance * Mathf.Sign(target.transform.position.z - origin.transform.position.z);
         origin.state = UnitStates.CannotAction;
-        yield return MoveToPosition(origin, origin.transform.position + forwardMovement, moveTime);
+        origin.PlayAnimationForAction(UnitActions.Attack, duration);
+        yield return new WaitForSeconds(duration * 0.5f);
         target.health -= origin.damage;
+        yield return new WaitForSeconds(duration * 0.5f);
         target.OnHealthChanged(origin.damage);
-        yield return new WaitForSeconds(duration * 0.1f);
-        yield return MoveToPosition(origin, startPosition, moveTime);
         origin.state = UnitStates.CanAction;
     }
 

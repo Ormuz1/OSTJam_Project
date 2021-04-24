@@ -32,7 +32,11 @@ public class UnitManager : SingletonBase<UnitManager>
     {
         base.Awake();
         cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
-        allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies).Select(parent => parent as Ally).ToArray();
+        Ally[] existingAllies = FindObjectsOfType<Ally>();
+        if(existingAllies.Length == 0)
+            allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies).Select(ally => ally as Ally).ToArray();
+        else
+            allies = existingAllies;
         currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow, spaceBetweenEnemies);
         TimerManager.Instance.StartTimer(enemyEncounters[currentEncounter].encounterTime);
     }

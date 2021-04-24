@@ -446,10 +446,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test Life Bar
       objectReference: {fileID: 0}
-    - target: {fileID: 7411749645957053405, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 186
-      objectReference: {fileID: 0}
     - target: {fileID: 8710498864575073527, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_SizeDelta.y
       value: 314.672
@@ -540,6 +536,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.data[1].encounterTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.data[3].encounterTime
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.data[3].enemies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.data[3].enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 6143336507801462770, guid: 2293afe31ed3b5242a28561eefc0c477, type: 3}
+    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
+      propertyPath: enemyEncounters.Array.data[3].enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 6143336507801462770, guid: 2293afe31ed3b5242a28561eefc0c477, type: 3}
     - target: {fileID: 3172923008977288574, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
       propertyPath: m_Name
       value: Unit Manager

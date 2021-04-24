@@ -19,17 +19,34 @@ public class SimpleEnemy : Unit
     private int currentInstruction = 0;
     private float commandTimer = 0;
     private bool shouldDrawTimer = true;
+    private Unit nextTarget;
+
+
     private void Update() 
     {
         if(state == UnitStates.CanAction)
         {
             if(shouldDrawTimer)
             {
+                nextTarget = ChooseTarget(enemyInstructions[currentInstruction]);
                 currentRadialTimer = MenuManager.Instance.DrawRadialTimer(enemyInstructions[currentInstruction].timeToExecute, this);
                 shouldDrawTimer = false;
+                
             }
-
-            if(commandTimer < enemyInstructions[currentInstruction].timeToExecute)
+            
+            if(!nextTarget || !nextTarget.CanBeTargeted)
+            {
+                nextTarget = ChooseTarget(enemyInstructions[currentInstruction]);
+                if(nextTarget == null)
+                {
+                    state = UnitStates.CannotAction;
+                    commandTimer = 0;
+                    shouldDrawTimer = true;
+                    Destroy(currentRadialTimer.gameObject);
+                    StartCoroutine(WaitForAvailableTargets()); 
+                }
+            }
+            else if(commandTimer < enemyInstructions[currentInstruction].timeToExecute)
             {
                 commandTimer += Time.deltaTime;
             }
@@ -46,6 +63,21 @@ public class SimpleEnemy : Unit
 
     protected void ExecuteEnemyInstruction(EnemyInstruction instruction)
     {
+
+        ExecuteAction(instruction.command, nextTarget);
+    }
+
+    private IEnumerator WaitForAvailableTargets()
+    {
+        while(!UnitManager.Instance.allies.Any(ally => ally.CanBeTargeted))
+        {
+            yield return new WaitForSeconds(1);
+        }
+        state = UnitStates.CanAction;
+    }
+
+    private Unit ChooseTarget(EnemyInstruction instruction)
+    {
         Unit[] targetPool;
         switch(instruction.targetPool)
         {
@@ -59,6 +91,9 @@ public class SimpleEnemy : Unit
                 targetPool = UnitManager.Instance.allies.Concat(UnitManager.Instance.currentEnemies).ToArray();
                 break;
         }
+        targetPool = targetPool.Where(unit => unit.CanBeTargeted).ToArray();
+        if(targetPool.Length == 0)
+            return null;
         Unit targetUnit;
         switch(instruction.target)
         {
@@ -72,11 +107,8 @@ public class SimpleEnemy : Unit
                 targetUnit = targetPool.GetHighestHealth();
                 break;
         }
-
-        ExecuteAction(instruction.command, targetUnit);
-    }
-
-    
+        return targetUnit;
+    }  
     protected override void OnDeath()
     {
         base.OnDeath();

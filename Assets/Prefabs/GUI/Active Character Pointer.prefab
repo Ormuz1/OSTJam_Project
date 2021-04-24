@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followUnit: {fileID: 4572093031714464092, guid: d68f28e5da7cc0c41b14ef4cf6539f8c, type: 3}
-  offset: {x: 0, y: 0.5, z: 0}
+  offset: {x: 0, y: 0.6, z: 0}
 --- !u!1001 &6342093570518736910
 PrefabInstance:
   m_ObjectHideFlags: 0

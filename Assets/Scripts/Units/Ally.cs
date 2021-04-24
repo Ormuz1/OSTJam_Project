@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class Ally : Unit
 {
+    private const float KO_DURATION = 7f;
     public UnitCommand[] commands;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnDeath()
     {
-        
+        base.OnDeath();
+        StartCoroutine(KnockedOut());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator KnockedOut()
     {
-        
+        if(state == UnitStates.CannotAction)
+        {
+            state = UnitStates.InterruptAction;
+        }
+        yield return new WaitUntil(() => state == UnitStates.CanAction);
+        state = UnitStates.KnockedOut;
+        animator.Play(deathAnimation.name);
+        yield return new WaitForSeconds(deathAnimation.length / 2);
+        animator.SetFloat("AnimationSpeed", 0);
+        yield return new WaitForSeconds(KO_DURATION - deathAnimation.length);
+        animator.SetFloat("AnimationSpeed", 1);
+        StartCoroutine(ResetAnimation(deathAnimation.length / 2));
+        MenuManager.Instance.DrawRadialTimer(KO_DURATION, this);
+        health = maxHealth;
+        lifeBar.value = (float)health / maxHealth;
+        state = UnitStates.CanAction;
     }
 }

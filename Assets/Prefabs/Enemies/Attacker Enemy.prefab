@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233e82b778db7454396b5a3f095db008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 10
   health: 0
   damage: 10
   unitName: Skeleton
@@ -118,10 +118,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   currentRadialTimer: {fileID: 0}
+  isGuarding: 0
   enemyInstructions:
   - command:
       action: 0
       duration: 3
     targetPool: 0
     target: 0
-    timeToExecute: 2.2
+    timeToExecute: 2.8
