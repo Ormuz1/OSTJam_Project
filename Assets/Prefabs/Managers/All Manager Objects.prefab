@@ -537,20 +537,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
-      propertyPath: enemyEncounters.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
-      propertyPath: enemyEncounters.Array.data[1].encounterTime
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
       propertyPath: enemyEncounters.Array.data[3].encounterTime
       value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
-      propertyPath: enemyEncounters.Array.data[3].enemies.Array.size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3172923008977288569, guid: 5004059981f8a624596ebdfcb961dfd9, type: 3}
       propertyPath: enemyEncounters.Array.data[3].enemies.Array.data[0]

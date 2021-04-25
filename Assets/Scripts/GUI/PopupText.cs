@@ -32,12 +32,13 @@ public class PopupText : MonoBehaviour
         string damageString = Mathf.Abs(damageAmount).ToString();
         if (damageAmount < 0) {
             textMesh.SetText("+" + damageString);
-            textMesh.color = healColor;
+            textColor = healColor;
         } else 
         {
             textMesh.SetText("-" + damageString);
-            textMesh.color = damageColor;
+            textColor = damageColor;
         }
+        textMesh.color = textColor;
         startAlpha = textMesh.color.a;
     }
 
@@ -52,16 +53,15 @@ public class PopupText : MonoBehaviour
             // Second half of the popup lifetime
             transform.localScale -= Vector3.one * scaleDecreaseAmount * Time.deltaTime;
         }
-
-        timer += Time.deltaTime;
         if (timer > duration) 
         {
-            textColor.a -= Mathf.Lerp(startAlpha, 0, Mathf.Abs(timer / timeToDisapear));
+            textColor.a = Mathf.Lerp(startAlpha, 0, (timer - duration) / timeToDisapear);
             textMesh.color = textColor;
-            if (timer < -timeToDisapear) {
+            if (timer > duration + timeToDisapear) {
                 Destroy(gameObject);
             }
         }
+        timer += Time.deltaTime;
     }
 
 }

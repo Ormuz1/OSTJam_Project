@@ -33,7 +33,6 @@ public static class CommandCoroutines
             if(!(timer < timeBetweenHeals))
             {
                 timer = 0;
-                target.health = Mathf.Min(target.health + 10, target.maxHealth);
                 target.OnHealthChanged(-10);
             }
             yield return null;
@@ -83,10 +82,10 @@ public static class CommandCoroutines
     {
         origin.state = UnitStates.CannotAction;
         origin.PlayAnimationForAction(UnitActions.Attack, duration);
-        yield return new WaitForSeconds(duration * 0.5f);
-        target.health -= origin.damage;
-        yield return new WaitForSeconds(duration * 0.5f);
+        yield return new WaitForSeconds(duration * Ally.ATTACK_ANIMATION_WINDUP_TIME);
+        UnitManager.Instance.unitSfxPlayer.PlayRandom(origin.attackSoundEffects);
         target.OnHealthChanged(origin.damage);
+        yield return new WaitForSeconds(duration - (duration * Ally.ATTACK_ANIMATION_WINDUP_TIME));
         origin.state = UnitStates.CanAction;
     }
 

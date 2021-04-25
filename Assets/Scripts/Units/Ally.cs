@@ -6,7 +6,7 @@ public class Ally : Unit
 {
     private const float KO_DURATION = 7f;
     public UnitCommand[] commands;
-
+    public const float ATTACK_ANIMATION_WINDUP_TIME = 0.284f; 
     protected override void OnDeath()
     {
         base.OnDeath();

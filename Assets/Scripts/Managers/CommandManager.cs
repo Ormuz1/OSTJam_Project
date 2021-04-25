@@ -135,6 +135,7 @@ public class CommandManager : SingletonBase<CommandManager>
         }
         commandMenuState = CommandMenuState.SelectingCommand;
         commandTarget = targetPool[selectedTarget];
+        unitCursor.FollowNewUnit(allyInstances[0]);
         MenuManager.Instance.SetMenuActive(true);
         activeUnit.ExecuteAction(activeUnit.commands[selectedAction], commandTarget);
     }

@@ -108,17 +108,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233e82b778db7454396b5a3f095db008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  health: 0
-  damage: 10
-  unitName: Skeleton
-  state: 0
   lifeBar: {fileID: 0}
   meshBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   currentRadialTimer: {fileID: 0}
   isGuarding: 0
+  animator: {fileID: 0}
+  maxHealth: 10
+  health: 0
+  damage: 10
+  unitName: Skeleton
+  state: 0
+  attackAnimation: {fileID: 0}
+  runAnimation: {fileID: 0}
+  idleAnimation: {fileID: 0}
+  deathAnimation: {fileID: 0}
+  executingActionSoundEffects:
+  - {fileID: 11400000, guid: f2c36b9da70426a4097055f461f3c84e, type: 2}
+  - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
+  - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
+  - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  attackSoundEffects:
+  - {fileID: 11400000, guid: e14756a695eded4408f250c90b669c83, type: 2}
+  - {fileID: 11400000, guid: 5b325baf63acc5e40988ca12b7bbd343, type: 2}
+  - {fileID: 11400000, guid: 0305221d7e6260f4d8880ecc011b5838, type: 2}
+  hurtSoundEffects:
+  - {fileID: 11400000, guid: f2c36b9da70426a4097055f461f3c84e, type: 2}
+  - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
+  - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
+  - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  deathSoundEffect:
+  - {fileID: 11400000, guid: f2c36b9da70426a4097055f461f3c84e, type: 2}
+  - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
+  - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
+  - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  unitCursorOffset: {x: 0, y: 0.6, z: 0}
   enemyInstructions:
   - command:
       action: 0

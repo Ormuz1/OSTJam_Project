@@ -22,23 +22,32 @@ public class UnitCommand
 
 public class Unit : MonoBehaviour
 {
-    public int maxHealth;
-    [HideInInspector] public int health;
-    public int damage;
-    public string unitName;
-    
-    public UnitStates state;
     private const float attackTargetDistance = -1.2f;
     public bool CanBeTargeted { get => state != UnitStates.KnockedOut;}
     [HideInInspector] public UnityEngine.UI.Slider lifeBar;
     [HideInInspector] public Bounds meshBounds;
     [HideInInspector] public RadialTimer currentRadialTimer;
     [HideInInspector] public bool isGuarding = false;
-    public Animator animator;
+    [HideInInspector] public Animator animator;
+    
+    public int maxHealth;
+    [HideInInspector] public int health;
+    public int damage;
+    public string unitName;
+    
+    public UnitStates state;
+    [Header("Animations")]
     public AnimationClip attackAnimation = null;
     public AnimationClip runAnimation = null;
     public AnimationClip idleAnimation = null;
     public AnimationClip deathAnimation = null;
+    [Header("Sound Effects")]
+    public SoundEffect[] executingActionSoundEffects;
+    public SoundEffect[] attackSoundEffects;
+    public SoundEffect[] hurtSoundEffects;
+    public SoundEffect[] deathSoundEffect;
+    public Vector3 unitCursorOffset;
+
     protected virtual void Awake() 
     {
         health = maxHealth;
@@ -53,6 +62,7 @@ public class Unit : MonoBehaviour
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
     {
+        UnitManager.Instance.unitSfxPlayer.PlayRandom(executingActionSoundEffects);
         state = UnitStates.CannotAction;
         switch(command.action)
         {
@@ -100,20 +110,23 @@ public class Unit : MonoBehaviour
     }
     public void OnHealthChanged(int amount)
     {
-        if(isGuarding) amount /= 2;
+        if(amount > 0)
+        {
+            if(isGuarding) amount /= 2;
+            if(health <= 0) OnDeath();
+            else UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
+        }
+        health = Mathf.Clamp(health - amount, 0, maxHealth);
         MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
         if(lifeBar)
         {
             lifeBar.value = (float)health / maxHealth;
         }
-        if(health <= 0)
-        {
-            OnDeath();
-        }
     }
 
     protected virtual void OnDeath()
     {
+        UnitManager.Instance.unitSfxPlayer.PlayRandom(deathSoundEffect);
         if(currentRadialTimer)
             Destroy(currentRadialTimer.gameObject);
     }

@@ -6,10 +6,11 @@ public class UnitCursor : MonoBehaviour
 {
     [SerializeField] private Unit followUnit;
     [SerializeField] private Vector3 offset;
+
     private void Update() 
     {
         if(followUnit)
-            transform.position = followUnit.transform.position + offset + Vector3.up * followUnit.meshBounds.size.y;
+            transform.position = followUnit.transform.position + followUnit.unitCursorOffset + Vector3.up * followUnit.meshBounds.size.y;
         else
             gameObject.SetActive(false);
     }

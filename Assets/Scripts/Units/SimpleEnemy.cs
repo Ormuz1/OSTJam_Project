@@ -21,7 +21,6 @@ public class SimpleEnemy : Unit
     private bool shouldDrawTimer = true;
     private Unit nextTarget;
 
-
     private void Update() 
     {
         if(state == UnitStates.CanAction)
@@ -63,7 +62,6 @@ public class SimpleEnemy : Unit
 
     protected void ExecuteEnemyInstruction(EnemyInstruction instruction)
     {
-
         ExecuteAction(instruction.command, nextTarget);
     }
 
