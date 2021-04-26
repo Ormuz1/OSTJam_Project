@@ -10,14 +10,15 @@ public class MenuManager : SingletonBase<MenuManager>
 {
     private UnitActions[] commands;
     [SerializeField] private RectTransform commandMenuTransform;
+    [SerializeField] private RectTransform commandPrefab;
+    [SerializeField] private RectTransform statusMenuTransform;
+    [SerializeField] private AllyStatusGUI statusInfoPrefab;
     [SerializeField] int fontSize;
 
     [Header("Cursor Properties:")]
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private float cursorScale;
     [SerializeField] private Vector2 cursorOffset;
-    [SerializeField] private RectTransform lifeBarsHolder;
-    [SerializeField] private Slider lifebarPrefab;
     [SerializeField] private PopupText popupTextPrefab;
     private Slider[] lifeBars;
     
@@ -51,10 +52,7 @@ public class MenuManager : SingletonBase<MenuManager>
 
     public void CalculateCursorPosition()
     {
-        List<RectTransform> actions = new List<RectTransform>();
-        commandMenuTransform.GetComponentsInChildren<RectTransform>(actions);
-        actions.Remove(commandMenuTransform);
-        RectTransform actionRect = actions[selectedAction];
+        RectTransform actionRect = commandMenuTransform.GetChild(selectedAction) as RectTransform;
         Vector2 cursorPosition = new Vector2(
             actionRect.position.x - cursorTexture.width * cursorScale,
             (Screen.height - actionRect.position.y) + cursorTexture.height * .5f
@@ -67,18 +65,18 @@ public class MenuManager : SingletonBase<MenuManager>
 
     public void DrawLifebars()
     {
-        int childrenToDestroy = lifeBarsHolder.childCount;
+        int childrenToDestroy = statusMenuTransform.childCount;
         for(int i = 0; i < childrenToDestroy; i++)
         {
-            Destroy(lifeBarsHolder.GetChild(i).gameObject);
+            Destroy(statusMenuTransform.GetChild(i).gameObject);
         }
         int childrenToCreate = UnitManager.Instance.allies.Length;
-        lifeBars = new Slider[childrenToCreate];
+        AllyStatusGUI[] statusInfos = new AllyStatusGUI[childrenToCreate];
         for(int i = 0; i < childrenToCreate; i++)
         {
-            lifeBars[i] = Instantiate(lifebarPrefab, lifeBarsHolder) as Slider;
-            UnitManager.Instance.allies[i].lifeBar = lifeBars[i];
-            lifeBars[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = UnitManager.Instance.allies[i].unitName;
+            statusInfos[i] = Instantiate(statusInfoPrefab, statusMenuTransform) as AllyStatusGUI;
+            UnitManager.Instance.allies[i].statusDisplay = statusInfos[i];
+            statusInfos[i].UpdateInfo(UnitManager.Instance.allies[i].playerStatus);
         }
     }
 
@@ -105,14 +103,9 @@ public class MenuManager : SingletonBase<MenuManager>
         }
         for(int i = 0; i < commands.Length; i++)
         {
-            TextMeshProUGUI item;
-            GameObject itemObject = new GameObject(commands[i].action.GetActionName());
-            itemObject.transform.parent = commandMenuTransform; 
-            item = itemObject.AddComponent<TextMeshProUGUI>();
-            item.rectTransform.pivot = new Vector2(0, 1);
-            item.text = commands[i].action.GetActionName();
-            item.fontSize = fontSize;
-            item.color = Color.white;
+            RectTransform newCommand = Instantiate(commandPrefab, commandMenuTransform) as RectTransform;
+            TextMeshProUGUI commandText = newCommand.GetComponentInChildren<TextMeshProUGUI>();
+            commandText.text = commands[i].action.GetActionName();
         }
         selectedAction = 0;
         CalculateCursorPosition();
@@ -130,7 +123,7 @@ public class MenuManager : SingletonBase<MenuManager>
 
     public void SetLifeBarMenuActive(bool state)
     {
-        lifeBarsHolder.parent.gameObject.SetActive(state);
+        statusMenuTransform.gameObject.SetActive(state);
     }
 
     public void SetMenuActive(bool state)

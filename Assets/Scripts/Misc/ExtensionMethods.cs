@@ -78,7 +78,7 @@ public static class UnitExtentions
         Unit result = units[0];
         for(int i = 1; i < units.Length; i++)
         {
-            if(units[i].health < result.health && units[i].CanBeTargeted)
+            if(units[i].playerStatus.health < result.playerStatus.health && units[i].CanBeTargeted)
             {
                 result = units[i];
             }
@@ -93,7 +93,7 @@ public static class UnitExtentions
         Unit result = units[0];
         for(int i = 1; i < units.Length; i++)
         {
-            if(units[i].health > result.health && units[i].CanBeTargeted)
+            if(units[i].playerStatus.health > result.playerStatus.health && units[i].CanBeTargeted)
             {
                 result = units[i];
             }
@@ -101,5 +101,14 @@ public static class UnitExtentions
         if(result.CanBeTargeted)
             return result;
         return null;
+    }
+}
+
+
+public static class GameObjectExtentions
+{
+    public static void DestroyThis(this GameObject gameObject)
+    {
+        MonoBehaviour.Destroy(gameObject);
     }
 }

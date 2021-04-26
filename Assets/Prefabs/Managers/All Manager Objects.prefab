@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3799012369616152496}
   m_Layer: 0
-  m_Name: Manager Objects
+  m_Name: All Manager Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,18 +246,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4556567203081060150, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.b
-      value: 0.6792453
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556567203081060150, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4556567203081060150, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4556567203081060151, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -278,10 +266,6 @@ PrefabInstance:
       propertyPath: radialTimerPrefab
       value: 
       objectReference: {fileID: 43557982, guid: cd94b4780ae61c74085d4f2aabedf58b, type: 3}
-    - target: {fileID: 4556567203358031830, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: commandMenuTransform
-      value: 
-      objectReference: {fileID: 7361436731637394638}
     - target: {fileID: 4556567203358031831, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_Name
       value: GUI Manager
@@ -480,11 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c1834f14ab4674bbc394dacc66b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &7361436731637394638 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4556567203081060151, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-  m_PrefabInstance: {fileID: 6419105077211239417}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8438974552366475569
 PrefabInstance:
   m_ObjectHideFlags: 0

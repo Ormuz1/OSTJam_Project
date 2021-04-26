@@ -10,10 +10,13 @@ public class RadialTimer : MonoBehaviour
     private float timer = 0;
     [SerializeField] private UnityEvent OnFinished;
     [HideInInspector] public Unit associatedUnit;
+ 
+
     private void Awake() 
     {
-        radial = GetComponent<Image>();
+        radial = GetComponent<Image>();    
     }
+
 
     private void Update() 
     {

@@ -16,7 +16,6 @@ public class TimerManager : SingletonBase<TimerManager>
     private float startTime;
     [HideInInspector] public bool isCountingDown;
 
-
     public override void Awake() 
     {
         base.Awake();
@@ -26,7 +25,7 @@ public class TimerManager : SingletonBase<TimerManager>
 
     public IEnumerator RestartTimer(float timeToRestart, float newTimerValue)
     {
-        sfxPlayer.StopCoroutine("PlayRepeatedly");
+        sfxPlayer.StopAllCoroutines();
         isCountingDown = false;
         float timerStartValue = timer;
         countdownSpeedMultiplier = 1f;

@@ -29,11 +29,16 @@ public class Unit : MonoBehaviour
     [HideInInspector] public RadialTimer currentRadialTimer;
     [HideInInspector] public bool isGuarding = false;
     [HideInInspector] public Animator animator;
-    
-    public int maxHealth;
-    [HideInInspector] public int health;
+    [Serializable]
+    public class PlayerStatus
+    {
+        public string unitName;
+        public int maxHealth;
+        [HideInInspector] public int health;
+    }
+
+    public PlayerStatus playerStatus;
     public int damage;
-    public string unitName;
     
     public UnitStates state;
     [Header("Animations")]
@@ -48,10 +53,12 @@ public class Unit : MonoBehaviour
     public SoundEffect[] hurtSoundEffects;
     public SoundEffect[] deathSoundEffect;
     public Vector3 unitCursorOffset;
-    private float timeUntilCanChangeAnimation = 0f;
+    [HideInInspector] public float timeUntilCanChangeAnimation = 0f;
+
+
     protected virtual void Awake() 
     {
-        health = maxHealth;
+        playerStatus.health = playerStatus.maxHealth;
         var renderers = GetComponentsInChildren<Renderer>();
         meshBounds = renderers[0].bounds;
         foreach(Renderer childRenderer in renderers)
@@ -60,6 +67,7 @@ public class Unit : MonoBehaviour
         }
         animator = GetComponentInChildren<Animator>();
     }
+
 
     public void ExecuteAction(UnitCommand command, Unit commandTarget = null)
     {
@@ -85,39 +93,42 @@ public class Unit : MonoBehaviour
         }
     }
     
+
     public void PlayAnimation(AnimationClip clip, float speed = 1f)
     {
         if(Time.time > timeUntilCanChangeAnimation && animator && clip)
         {
+            timeUntilCanChangeAnimation = Time.time + clip.length;
             animator.SetFloat("AnimationSpeed", speed);
             animator.Play(clip.name);
             StopCoroutine("ResetAnimation");
             StartCoroutine(ResetAnimation(clip.length));
         }
     }
+
+
     public IEnumerator ResetAnimation(float delay)
     {
         yield return new WaitForSeconds(delay);
         animator.Play(idleAnimation.name);
         animator.SetFloat("AnimationSpeed", 1);
     }
-    public void OnHealthChanged(int amount)
+
+
+    public virtual void OnHealthChanged(int amount)
     {
         if(amount > 0)
         {
             if(isGuarding) amount /= 2;
-            if(health <= 0) OnDeath();
+            if(playerStatus.health <= 0) OnDeath();
             else UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
             PlayAnimation(hurtAnimation);
         }
 
-        health = Mathf.Clamp(health - amount, 0, maxHealth);
+        playerStatus.health = Mathf.Clamp(playerStatus.health - amount, 0,playerStatus.maxHealth);
         MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
-        if(lifeBar)
-        {
-            lifeBar.value = (float)health / maxHealth;
-        }
     }
+
 
     protected virtual void OnDeath()
     {
@@ -125,5 +136,4 @@ public class Unit : MonoBehaviour
         if(currentRadialTimer)
             Destroy(currentRadialTimer.gameObject);
     }
-
 }

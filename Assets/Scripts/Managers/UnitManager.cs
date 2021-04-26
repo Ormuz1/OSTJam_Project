@@ -39,8 +39,14 @@ public class UnitManager : SingletonBase<UnitManager>
         else
             allies = existingAllies;
         currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow, spaceBetweenEnemies);
-        TimerManager.Instance.StartTimer(enemyEncounters[currentEncounter].encounterTime);
     }
+
+    
+    private void Start() 
+    {
+        TimerManager.Instance.StartTimer(enemyEncounters[currentEncounter].encounterTime);    
+    }
+
 
     public Unit[] CreateUnits(Unit[] units, Vector3 centerPoint, Vector3 spaceBetweenUnits, UnitStates startState = UnitStates.CanAction)
     {

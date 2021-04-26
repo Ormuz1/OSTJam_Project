@@ -51,10 +51,11 @@ MonoBehaviour:
   currentRadialTimer: {fileID: 0}
   isGuarding: 0
   animator: {fileID: 0}
-  maxHealth: 100
-  health: 0
+  playerStatus:
+    unitName: Test
+    maxHealth: 100
+    health: 0
   damage: 10
-  unitName: Ally 1
   state: 0
   attackAnimation: {fileID: 4723146814002874508, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
   runAnimation: {fileID: -7551964380084998518, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
@@ -79,6 +80,9 @@ MonoBehaviour:
     duration: 2
   - action: 2
     duration: 0
+  - action: 1
+    duration: 0
+  statusDisplay: {fileID: 0}
 --- !u!95 &2729577161436328203
 Animator:
   serializedVersion: 3
