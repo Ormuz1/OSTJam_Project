@@ -21,7 +21,7 @@ public class Ally : Unit
         }
         yield return new WaitUntil(() => state == UnitStates.CanAction);
         state = UnitStates.KnockedOut;
-        animator.Play(deathAnimation.name);
+        PlayAnimation(deathAnimation);
         yield return new WaitForSeconds(deathAnimation.length / 2);
         animator.SetFloat("AnimationSpeed", 0);
         yield return new WaitForSeconds(KO_DURATION - deathAnimation.length);

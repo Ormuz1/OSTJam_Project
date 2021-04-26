@@ -60,6 +60,7 @@ MonoBehaviour:
   runAnimation: {fileID: -7551964380084998518, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
   idleAnimation: {fileID: -8945691123924629249, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
   deathAnimation: {fileID: -982115091633673366, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
+  hurtAnimation: {fileID: -5578746458225771231, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
   executingActionSoundEffects:
   - {fileID: 0}
   attackSoundEffects:

@@ -41,13 +41,14 @@ public class Unit : MonoBehaviour
     public AnimationClip runAnimation = null;
     public AnimationClip idleAnimation = null;
     public AnimationClip deathAnimation = null;
+    public AnimationClip hurtAnimation = null;
     [Header("Sound Effects")]
     public SoundEffect[] executingActionSoundEffects;
     public SoundEffect[] attackSoundEffects;
     public SoundEffect[] hurtSoundEffects;
     public SoundEffect[] deathSoundEffect;
     public Vector3 unitCursorOffset;
-
+    private float timeUntilCanChangeAnimation = 0f;
     protected virtual void Awake() 
     {
         health = maxHealth;
@@ -84,24 +85,16 @@ public class Unit : MonoBehaviour
         }
     }
     
-
-    public void PlayAnimationForAction(UnitActions action, float duration)
+    public void PlayAnimation(AnimationClip clip, float speed = 1f)
     {
-        AnimationClip selectedAnimation = null;
-        switch(action)
+        if(Time.time > timeUntilCanChangeAnimation && animator && clip)
         {
-            case UnitActions.Attack:
-                selectedAnimation = attackAnimation;
-                break;
-        }
-        if(selectedAnimation != null)
-        {
-            animator.Play(selectedAnimation.name);
-            animator.SetFloat("AnimationSpeed", selectedAnimation.length / duration);
-            StartCoroutine(ResetAnimation(duration));
+            animator.SetFloat("AnimationSpeed", speed);
+            animator.Play(clip.name);
+            StopCoroutine("ResetAnimation");
+            StartCoroutine(ResetAnimation(clip.length));
         }
     }
-
     public IEnumerator ResetAnimation(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -115,7 +108,9 @@ public class Unit : MonoBehaviour
             if(isGuarding) amount /= 2;
             if(health <= 0) OnDeath();
             else UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
+            PlayAnimation(hurtAnimation);
         }
+
         health = Mathf.Clamp(health - amount, 0, maxHealth);
         MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
         if(lifeBar)

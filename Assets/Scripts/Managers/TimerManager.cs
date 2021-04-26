@@ -8,14 +8,25 @@ public class TimerManager : SingletonBase<TimerManager>
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI timerMultiplierText;
     [SerializeField] private Image radial;
-    public float countdownSpeedMultiplier = 1f;
+    [SerializeField] private SoundEffect[] clockTickingSoundEffects;
+    
+    private SoundEffectPlayer sfxPlayer;
+    [HideInInspector] public float countdownSpeedMultiplier = 1f;
     private float timer;
     private float startTime;
     [HideInInspector] public bool isCountingDown;
 
 
+    public override void Awake() 
+    {
+        base.Awake();
+        sfxPlayer = GetComponent<SoundEffectPlayer>();    
+    }
+
+
     public IEnumerator RestartTimer(float timeToRestart, float newTimerValue)
     {
+        sfxPlayer.StopCoroutine("PlayRepeatedly");
         isCountingDown = false;
         float timerStartValue = timer;
         countdownSpeedMultiplier = 1f;
@@ -35,6 +46,7 @@ public class TimerManager : SingletonBase<TimerManager>
         startTime = newTimerValue;
         timer = newTimerValue;
         isCountingDown = true;
+        sfxPlayer.StartCoroutine(sfxPlayer.PlayRepeatedly(clockTickingSoundEffects, 1f));
     }
 
 
@@ -54,7 +66,7 @@ public class TimerManager : SingletonBase<TimerManager>
             SetTimerText();
             if(timer <= 0)
             {
-                // Lose
+                GameManager.Instance.Lose();
             }
         }
     }

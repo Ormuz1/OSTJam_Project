@@ -6,7 +6,6 @@ public class SoundEffectPlayer : MonoBehaviour
 {
     private AudioSource audioSource;
 
-
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
         if(!audioSource)
@@ -20,10 +19,11 @@ public class SoundEffectPlayer : MonoBehaviour
             audioSource.PlayOneShot(soundEffect.audioClip, soundEffect.volume);
     }
 
-    public void PlayRandom(SoundEffect[] soundEffects)
+    public SoundEffect PlayRandom(SoundEffect[] soundEffects)
     {
         SoundEffect selectedSfx = soundEffects[Random.Range(0, soundEffects.Length)];
         Play(selectedSfx);
+        return selectedSfx;
     }
 
     public IEnumerator PlayRepeatedly(SoundEffect soundEffect, float duration = Mathf.Infinity)
@@ -33,6 +33,16 @@ public class SoundEffectPlayer : MonoBehaviour
         {
             Play(soundEffect);
             yield return waitForClip;
+        }
+    }
+
+    public IEnumerator PlayRepeatedly(SoundEffect[] soundEffects, float interval, float duration = Mathf.Infinity)
+    {
+        SoundEffect chosenEffect;
+        for(float timer = 0; timer < duration; timer += Time.deltaTime)
+        {
+            chosenEffect = PlayRandom(soundEffects);
+            yield return new WaitForSeconds(chosenEffect.audioClip.length + (interval - chosenEffect.audioClip.length));
         }
     }
 }

@@ -120,10 +120,11 @@ MonoBehaviour:
   damage: 20
   unitName: Skeleton
   state: 0
-  attackAnimation: {fileID: 0}
-  runAnimation: {fileID: 0}
-  idleAnimation: {fileID: 0}
-  deathAnimation: {fileID: 0}
+  attackAnimation: {fileID: 4723146814002874508, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
+  runAnimation: {fileID: -982115091633673366, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
+  idleAnimation: {fileID: -5578746458225771231, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
+  deathAnimation: {fileID: -8945691123924629249, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
+  hurtAnimation: {fileID: -8945691123924629249, guid: 597293e82a808744b87b3371f179f997, type: 3}
   executingActionSoundEffects:
   - {fileID: 11400000, guid: f2c36b9da70426a4097055f461f3c84e, type: 2}
   - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}

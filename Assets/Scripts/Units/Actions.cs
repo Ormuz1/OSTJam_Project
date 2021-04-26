@@ -81,7 +81,7 @@ public static class CommandCoroutines
     public static IEnumerator Attack(Unit origin, Unit target, float duration)
     {
         origin.state = UnitStates.CannotAction;
-        origin.PlayAnimationForAction(UnitActions.Attack, duration);
+        origin.PlayAnimation(origin.attackAnimation, origin.attackAnimation.length / duration);
         yield return new WaitForSeconds(duration * Ally.ATTACK_ANIMATION_WINDUP_TIME);
         UnitManager.Instance.unitSfxPlayer.PlayRandom(origin.attackSoundEffects);
         target.OnHealthChanged(origin.damage);
