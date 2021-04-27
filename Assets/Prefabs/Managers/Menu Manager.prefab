@@ -360,6 +360,7 @@ MonoBehaviour:
   cursorScale: 1
   popupTextPrefab: {fileID: -1541429735644579094, guid: 199ec3a46706e2b45b33690b753bd56a, type: 3}
   radialTimerPrefab: {fileID: 4392589296398953967, guid: cd94b4780ae61c74085d4f2aabedf58b, type: 3}
+  radialTimerOffset: {x: 0, y: -30}
   selectedAction: 0
 --- !u!1001 &357716263605255108
 PrefabInstance:

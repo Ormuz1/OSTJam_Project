@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitActions { Attack, Heal, Defend, Stop, TimeSpeedUp}
+public enum UnitActions { Attack, Heal, Defend, Stop, TimeSpeedUp, StrongAttack}
 
 public static class CommandCoroutines
 {
@@ -82,8 +82,6 @@ public static class CommandCoroutines
     {
         origin.state = UnitStates.CannotAction;
         float windupTime = origin.GetType() == typeof(Ally) ? Ally.ATTACK_ANIMATION_WINDUP_TIME : SimpleEnemy.ATTACK_ANIMATION_WINDUP_TIME;
-        Debug.Log(windupTime);
-        Debug.Log(origin.attackAnimation.length);
         windupTime *= origin.attackAnimation.length / duration;
         if(Time.time < origin.timeUntilCanChangeAnimation)
             yield return new WaitForSeconds(origin.timeUntilCanChangeAnimation - Time.time);
@@ -95,6 +93,19 @@ public static class CommandCoroutines
         origin.state = UnitStates.CanAction;
     }
 
+    public static IEnumerator StrongAttack(Unit origin, Unit target, float duration)
+    {
+        origin.state = UnitStates.CanAction;
+        float windupTime = Ally.ATTACK_ANIMATION_WINDUP_TIME;
+        MenuManager.Instance.DrawRadialTimer(6f, origin);
+        yield return new WaitForSeconds(6f);
+        origin.PlayAnimation(origin.attackAnimation, origin.attackAnimation.length);
+        yield return new WaitForSeconds(windupTime);
+        UnitManager.Instance.unitSfxPlayer.Play(origin.strongAttackSoundEffect);
+        target.OnHealthChanged(origin.damage * 2);
+        yield return new WaitForSeconds(origin.attackAnimation.length - windupTime);
+        origin.state = UnitStates.CanAction;
+    }
 
     public static IEnumerator MoveToPosition(Unit origin, Vector3 target, float duration)
     {

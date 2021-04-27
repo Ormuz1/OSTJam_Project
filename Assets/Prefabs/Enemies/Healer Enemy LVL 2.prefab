@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6713417806097600483}
   - component: {fileID: 6143336507801462770}
   m_Layer: 0
-  m_Name: Healer Enemy
+  m_Name: Healer Enemy LVL 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   playerStatus:
     unitName: 
-    maxHealth: 20
+    maxHealth: 35
     health: 0
   damage: 25
   state: 0
@@ -80,6 +80,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
   - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
   - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  strongAttackSoundEffect: {fileID: 0}
   unitCursorOffset: {x: 0, y: 0.6, z: 0}
   timeUntilCanChangeAnimation: 0
   enemyInstructions:
@@ -96,6 +97,7 @@ MonoBehaviour:
     target: 1
     timeToExecute: 3
   waitTimeModifierRange: 0.2
+  setupWaitRange: 1
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0

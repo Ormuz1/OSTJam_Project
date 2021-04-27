@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 522195571865325494}
   - component: {fileID: -8516085314324794119}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,10 +51,10 @@ MonoBehaviour:
   isGuarding: 0
   animator: {fileID: 0}
   playerStatus:
-    unitName: Alpha Bot
-    maxHealth: 100
+    unitName: Omega Bot
+    maxHealth: 60
     health: 0
-  damage: 10
+  damage: 20
   state: 0
   attackAnimation: {fileID: 4723146814002874508, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
   runAnimation: {fileID: -7551964380084998518, guid: c35db699f8b768b4a991b2592f1b77f6, type: 3}
@@ -72,14 +72,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bb5d7060b6f49a449906e2d0e8225172, type: 2}
   - {fileID: 11400000, guid: 1f28201f5733de741a25b6213f12b200, type: 2}
   deathSoundEffect:
-  - {fileID: 11400000, guid: c5c82901903f0db45880f2fd9fe9ca84, type: 2}
+  - {fileID: 11400000, guid: 51f47e2d5823fca46b814122c4e356bb, type: 2}
+  strongAttackSoundEffect: {fileID: 0}
   unitCursorOffset: {x: 0, y: 2.16, z: 0}
   timeUntilCanChangeAnimation: 0
   commands:
   - action: 0
     duration: 2
-  - action: 2
-    duration: 0
+  - action: 5
+    duration: 2
   statusDisplay: {fileID: 0}
 --- !u!95 &2729577161436328203
 Animator:

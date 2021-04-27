@@ -89,7 +89,7 @@ MonoBehaviour:
     targetPool: 0
     target: 0
     timeToExecute: 2.8
-  waitTimeModifierRange: 0.2
+  waitTimeModifierRange: 0.5
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0

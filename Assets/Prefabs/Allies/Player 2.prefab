@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 522195571865325494}
   - component: {fileID: -8516085314324794119}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,8 +51,8 @@ MonoBehaviour:
   isGuarding: 0
   animator: {fileID: 0}
   playerStatus:
-    unitName: Alpha Bot
-    maxHealth: 100
+    unitName: Gamma Bot
+    maxHealth: 250
     health: 0
   damage: 10
   state: 0
@@ -76,9 +76,7 @@ MonoBehaviour:
   unitCursorOffset: {x: 0, y: 2.16, z: 0}
   timeUntilCanChangeAnimation: 0
   commands:
-  - action: 0
-    duration: 2
-  - action: 2
+  - action: 1
     duration: 0
   statusDisplay: {fileID: 0}
 --- !u!95 &2729577161436328203

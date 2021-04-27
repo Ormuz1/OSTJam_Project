@@ -19,11 +19,12 @@ public class MenuManager : SingletonBase<MenuManager>
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private float cursorScale;
     [SerializeField] private PopupText popupTextPrefab;
+    [SerializeField] private RadialTimer radialTimerPrefab;
+    [SerializeField] private Vector2 radialTimerOffset;
     private Slider[] lifeBars;
     
     private Rect cursorRect;
     private bool isMenuDrawn = false;
-    [SerializeField] private RadialTimer radialTimerPrefab;
 
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
@@ -34,16 +35,9 @@ public class MenuManager : SingletonBase<MenuManager>
     }
     private void OnGUI() 
     {
-        if(drawCursorForTheFirstTime)
-        {
-            if(Event.current.type == EventType.Repaint)
-            {
-                CalculateCursorPosition();
-                drawCursorForTheFirstTime = false;
-            }
-        }
         if(isMenuDrawn)
         {
+            CalculateCursorPosition();
             GUI.DrawTexture(cursorRect, cursorTexture);
         }
     }
@@ -51,12 +45,13 @@ public class MenuManager : SingletonBase<MenuManager>
 
     public void CalculateCursorPosition()
     {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(commandMenuTransform);
         RectTransform actionRect = commandMenuTransform.GetChild(selectedAction) as RectTransform;
+        Debug.Log(actionRect.pivot);
         Vector2 cursorPosition = new Vector2(
             actionRect.position.x - cursorTexture.width * cursorScale,
             (Screen.height - actionRect.position.y) - cursorTexture.height * cursorScale * .5f
             );
-        Debug.Log(cursorPosition);
         cursorRect = new Rect(
             cursorPosition,
             new Vector2(cursorTexture.width, cursorTexture.height) * cursorScale
@@ -83,10 +78,15 @@ public class MenuManager : SingletonBase<MenuManager>
 
     internal RadialTimer DrawRadialTimer(float duration, Unit unit)
     {
+        if(!unit.meshBounds.Contains(transform.position))
+            unit.meshBounds = unit.GetFullMeshBounds();
         RadialTimer radialTimer = Instantiate(radialTimerPrefab, transform) as RadialTimer;
         radialTimer.duration = duration;
         Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
-        radialTimer.GetComponent<RectTransform>().position = unitScreenCorners[1] + unit.meshBounds.size * 1.5f;
+        radialTimer.GetComponent<RectTransform>().position = new Vector2(
+            unitScreenCorners[1].x,
+            unitScreenCorners[0].y
+        ) + radialTimerOffset;
         radialTimer.associatedUnit = unit;
         return radialTimer;
     }
@@ -109,7 +109,6 @@ public class MenuManager : SingletonBase<MenuManager>
             commandText.fontSize = fontSize;
         }
         selectedAction = 0;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(commandMenuTransform);
         CalculateCursorPosition();
         isMenuDrawn = true;
     }
@@ -118,7 +117,6 @@ public class MenuManager : SingletonBase<MenuManager>
     public void CreatePopupText(Vector3 position, int value)
     {
         PopupText popupText = Instantiate(popupTextPrefab, position, Quaternion.identity, transform) as PopupText;
-        popupText.transform.SetSiblingIndex(0);     // Draw it in front of other UI elements
 
         popupText.Setup(value);
     }

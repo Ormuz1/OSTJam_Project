@@ -14,7 +14,8 @@ public static class UnitActionsExtentions
         UnitActions[] actionsThatRequireTargets = new UnitActions[]
         {
             UnitActions.Attack,
-            UnitActions.Heal
+            UnitActions.Heal,
+            UnitActions.StrongAttack
         };
 
         return actionsThatRequireTargets.Contains(action);
@@ -28,6 +29,9 @@ public static class UnitActionsExtentions
                 targetPool = UnitManager.Instance.allies.Concat(UnitManager.Instance.currentEnemies).ToArray();
                 break;
             case UnitActions.Attack:
+                targetPool = UnitManager.Instance.currentEnemies.Concat(UnitManager.Instance.allies).ToArray();
+                break;
+             case UnitActions.StrongAttack:
                 targetPool = UnitManager.Instance.currentEnemies.Concat(UnitManager.Instance.allies).ToArray();
                 break;
             default:

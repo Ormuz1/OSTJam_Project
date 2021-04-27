@@ -51,13 +51,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
-  timeToDisapear: 1
-  scaleIncreaseAmount: 10
-  scaleDecreaseAmount: 1
-  scaleTime: 0.1
+  timeToDisapear: 0.3
+  scaleIncreaseAmount: 1
+  scaleDecreaseAmount: 0.2
+  scaleTime: 0.584
   damageColor: {r: 0.8018868, g: 0.04160734, b: 0.04160734, a: 1}
   healColor: {r: 0.003782494, g: 0.8018868, b: 0.1894533, a: 1}
-  textMovement: {x: 100, y: 100}
+  textMovement: {x: 60, y: 150}
 --- !u!222 &-259673519014286988
 CanvasRenderer:
   m_ObjectHideFlags: 0

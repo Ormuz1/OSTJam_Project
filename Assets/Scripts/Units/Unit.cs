@@ -51,6 +51,7 @@ public class Unit : MonoBehaviour
     public SoundEffect[] attackSoundEffects;
     public SoundEffect[] hurtSoundEffects;
     public SoundEffect[] deathSoundEffect;
+    public SoundEffect strongAttackSoundEffect;
     public Vector3 unitCursorOffset;
     [HideInInspector] public float timeUntilCanChangeAnimation = 0f;
     protected Coroutine animationReset;
@@ -60,12 +61,7 @@ public class Unit : MonoBehaviour
     protected virtual void Awake() 
     {
         playerStatus.health = playerStatus.maxHealth;
-        var renderers = GetComponentsInChildren<Renderer>();
-        meshBounds = renderers[0].bounds;
-        foreach(Renderer childRenderer in renderers)
-        {
-            meshBounds.Encapsulate(childRenderer.bounds);
-        }
+        meshBounds = GetFullMeshBounds();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -91,6 +87,9 @@ public class Unit : MonoBehaviour
             case UnitActions.TimeSpeedUp:
                 TimerManager.Instance.countdownSpeedMultiplier += .25f;
                 break;
+            case UnitActions.StrongAttack:
+                currentAction = StartCoroutine(CommandCoroutines.StrongAttack(this, commandTarget, command.duration));
+                break;
         }
     }
     
@@ -104,7 +103,7 @@ public class Unit : MonoBehaviour
             animator.Play(clip.name);
             if(isWaitingToResetAnimation)
                 StopCoroutine(animationReset);
-            animationReset = StartCoroutine(ResetAnimation(clip.length));
+            animationReset = StartCoroutine(ResetAnimation(length));
         }
     }
 
@@ -155,5 +154,16 @@ public class Unit : MonoBehaviour
             Destroy(currentRadialTimer.gameObject);
         if(currentAction != null)
             StopCoroutine(currentAction);
+    }
+
+    public Bounds GetFullMeshBounds()
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+        Bounds meshBounds = renderers[0].bounds;
+        foreach(Renderer childRenderer in renderers)
+        {
+            meshBounds.Encapsulate(childRenderer.bounds);
+        }
+        return meshBounds;
     }
 }

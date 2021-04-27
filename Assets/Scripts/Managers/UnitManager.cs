@@ -93,7 +93,8 @@ public class UnitManager : SingletonBase<UnitManager>
             }
             for(int i = 0; i < currentEnemies.Length; i++)
             {
-                currentEnemies[i].state = UnitStates.CanAction;
+                var enemy = currentEnemies[i] as SimpleEnemy;
+                enemy.StartCoroutine(enemy.Setup());
             }
             MenuManager.Instance.SetLifeBarMenuActive(true);
             CommandManager.Instance.gameObject.SetActive(true);

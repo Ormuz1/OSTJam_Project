@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6713417806097600483}
   - component: {fileID: 6143336507801462770}
   m_Layer: 0
-  m_Name: Healer Enemy
+  m_Name: Strong Attacker Enemy LVL 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6713417806097600492}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_Children:
   - {fileID: 4293591689192572516}
   m_Father: {fileID: 0}
@@ -52,9 +52,9 @@ MonoBehaviour:
   animator: {fileID: 0}
   playerStatus:
     unitName: 
-    maxHealth: 20
+    maxHealth: 70
     health: 0
-  damage: 25
+  damage: 40
   state: 0
   attackAnimation: {fileID: 3374748389425109202, guid: a17c2ce273af55747825e7ab89550d83, type: 3}
   runAnimation: {fileID: 3374748389425109202, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
@@ -80,22 +80,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
   - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
   - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  strongAttackSoundEffect: {fileID: 0}
   unitCursorOffset: {x: 0, y: 0.6, z: 0}
   timeUntilCanChangeAnimation: 0
   enemyInstructions:
   - command:
-      action: 1
-      duration: 0
-    targetPool: 1
-    target: 1
-    timeToExecute: 6
-  - command:
-      action: 3
-      duration: 0
-    targetPool: 1
-    target: 1
-    timeToExecute: 3
+      action: 0
+      duration: 3
+    targetPool: 0
+    target: 0
+    timeToExecute: 8
   waitTimeModifierRange: 0.2
+  setupWaitRange: 1
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151,18 +147,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8682516824761197357, guid: 6cce25a014932844db92dd94f0505ba0, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8682516824761197357, guid: 6cce25a014932844db92dd94f0505ba0, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8682516824761197357, guid: 6cce25a014932844db92dd94f0505ba0, type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2742053973323316788, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cce25a014932844db92dd94f0505ba0, type: 3}
 --- !u!4 &4293591689192572516 stripped

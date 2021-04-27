@@ -17,12 +17,14 @@ public class SimpleEnemy : Unit
     }
     [SerializeField] private EnemyInstruction[] enemyInstructions;
     [SerializeField] private float waitTimeModifierRange = 0.2f;
+    [SerializeField] private float setupWaitRange = 1f;
     private int currentInstruction = 0;
     private float commandTimer = 0;
     private bool shouldDrawTimer = true;
     private Unit nextTarget;
     public const float ATTACK_ANIMATION_WINDUP_TIME = 1.6515f;
     private float currenActionWaitTime;
+
     private void Update() 
     {
         if(state == UnitStates.CanAction)
@@ -33,7 +35,6 @@ public class SimpleEnemy : Unit
                 nextTarget = ChooseTarget(enemyInstructions[currentInstruction]);
                 currentRadialTimer = MenuManager.Instance.DrawRadialTimer(currenActionWaitTime, this);
                 shouldDrawTimer = false;
-                
             }
             
             if(!nextTarget || !nextTarget.CanBeTargeted)
@@ -74,6 +75,13 @@ public class SimpleEnemy : Unit
         {
             yield return new WaitForSeconds(1);
         }
+        state = UnitStates.CanAction;
+    }
+
+
+    public IEnumerator Setup()
+    {
+        yield return new WaitForSeconds(Random.Range(0, setupWaitRange));
         state = UnitStates.CanAction;
     }
 

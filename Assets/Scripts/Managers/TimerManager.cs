@@ -11,6 +11,7 @@ public class TimerManager : SingletonBase<TimerManager>
     [SerializeField] private SoundEffect[] clockTickingSoundEffects;
     
     private SoundEffectPlayer sfxPlayer;
+    private AudioReverbFilter reverbFilter;
     [HideInInspector] public float countdownSpeedMultiplier = 1f;
     private float timer;
     private float startTime;
@@ -19,7 +20,9 @@ public class TimerManager : SingletonBase<TimerManager>
     public override void Awake() 
     {
         base.Awake();
-        sfxPlayer = GetComponent<SoundEffectPlayer>();    
+        sfxPlayer = GetComponent<SoundEffectPlayer>();
+        reverbFilter = GetComponent<AudioReverbFilter>();
+        reverbFilter.reverbLevel = -2000;
     }
 
 
@@ -32,7 +35,7 @@ public class TimerManager : SingletonBase<TimerManager>
         for(float loopTimer = 0; loopTimer < timeToRestart; loopTimer += Time.deltaTime)
         {
             timer = Mathf.Lerp(timerStartValue, newTimerValue, loopTimer / timeToRestart);
-            radial.fillAmount = timer / newTimerValue;
+            radial.fillAmount = Mathf.Clamp01(timer / newTimerValue);
             SetTimerText();
             yield return null;
         }
@@ -60,8 +63,9 @@ public class TimerManager : SingletonBase<TimerManager>
     {
         if(isCountingDown)
         {
+            reverbFilter.reverbLevel = Mathf.Lerp(600, -2000, timer / startTime);
             timer -= Time.deltaTime * countdownSpeedMultiplier;
-            radial.fillAmount = timer / startTime;
+            radial.fillAmount = Mathf.Clamp01(timer / startTime);
             SetTimerText();
             if(timer <= 0)
             {

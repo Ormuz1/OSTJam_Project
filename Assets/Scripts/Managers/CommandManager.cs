@@ -135,10 +135,10 @@ public class CommandManager : SingletonBase<CommandManager>
             }
             yield return null;
         }
-        commandMenuState = CommandMenuState.SelectingCommand;
         commandTarget = targetPool[selectedTarget];
-        unitCursor.FollowNewUnit(allyInstances[0]);
-        MenuManager.Instance.SetMenuActive(true);
         activeUnit.ExecuteAction(activeUnit.commands[selectedAction], commandTarget);
+        MenuManager.Instance.SetMenuActive(false);
+        commandMenuState = CommandMenuState.SelectingCommand;
+        unitCursor.gameObject.SetActive(false);
     }
 }

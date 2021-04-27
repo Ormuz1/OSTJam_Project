@@ -18,5 +18,6 @@ public class UnitCursor : MonoBehaviour
     public void FollowNewUnit(Unit unit)
     {
         followUnit = unit;
+        transform.position = followUnit.transform.position + followUnit.unitCursorOffset + Vector3.up * followUnit.meshBounds.size.y;
     }
 }
