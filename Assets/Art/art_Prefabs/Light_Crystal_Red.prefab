@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6247351776199422566}
   - component: {fileID: 8167271459326346924}
   - component: {fileID: 7392218704906803754}
+  - component: {fileID: 97491704410076227}
   m_Layer: 0
   m_Name: Light_Crystal_Red
   m_TagString: Untagged
@@ -144,3 +145,22 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!95 &97491704410076227
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7662600364603664249}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4cb9c85bebb2d345ba555a0e3bb6427, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
