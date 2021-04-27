@@ -24,7 +24,6 @@ public class Unit : MonoBehaviour
 {
     private const float attackTargetDistance = -1.2f;
     public bool CanBeTargeted { get => state != UnitStates.KnockedOut;}
-    [HideInInspector] public UnityEngine.UI.Slider lifeBar;
     [HideInInspector] public Bounds meshBounds;
     [HideInInspector] public RadialTimer currentRadialTimer;
     [HideInInspector] public bool isGuarding = false;
@@ -34,7 +33,7 @@ public class Unit : MonoBehaviour
     {
         public string unitName;
         public int maxHealth;
-        [HideInInspector] public int health;
+        public int health;
     }
 
     public PlayerStatus playerStatus;
@@ -54,8 +53,8 @@ public class Unit : MonoBehaviour
     public SoundEffect[] deathSoundEffect;
     public Vector3 unitCursorOffset;
     [HideInInspector] public float timeUntilCanChangeAnimation = 0f;
-
-
+    protected Coroutine animationReset;
+    private bool isWaitingToResetAnimation = false;
     protected virtual void Awake() 
     {
         playerStatus.health = playerStatus.maxHealth;
@@ -101,17 +100,27 @@ public class Unit : MonoBehaviour
             timeUntilCanChangeAnimation = Time.time + clip.length;
             animator.SetFloat("AnimationSpeed", speed);
             animator.Play(clip.name);
-            StopCoroutine("ResetAnimation");
-            StartCoroutine(ResetAnimation(clip.length));
+            if(isWaitingToResetAnimation)
+                StopCoroutine(animationReset);
+            animationReset = StartCoroutine(ResetAnimation(clip.length));
         }
     }
 
-
+    public void PlayAnimationFor(AnimationClip clip, float duration, float speed = 1f)
+    {
+        animator.SetFloat("AnimationSpeed", speed);
+        animator.Play(clip.name);
+        if(!(animationReset is null))
+            StopCoroutine(animationReset);
+        animationReset = StartCoroutine(ResetAnimation(duration));
+    }
     public IEnumerator ResetAnimation(float delay)
     {
+        isWaitingToResetAnimation = true;
         yield return new WaitForSeconds(delay);
         animator.Play(idleAnimation.name);
         animator.SetFloat("AnimationSpeed", 1);
+        isWaitingToResetAnimation = false;
     }
 
 
@@ -120,12 +129,15 @@ public class Unit : MonoBehaviour
         if(amount > 0)
         {
             if(isGuarding) amount /= 2;
-            if(playerStatus.health <= 0) OnDeath();
-            else UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
-            PlayAnimation(hurtAnimation);
+            if(playerStatus.health - amount <= 0) OnDeath();
+            else 
+            {
+                UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
+                PlayAnimation(hurtAnimation);
+            }
         }
 
-        playerStatus.health = Mathf.Clamp(playerStatus.health - amount, 0,playerStatus.maxHealth);
+        playerStatus.health = Mathf.Clamp(playerStatus.health - amount, 0, playerStatus.maxHealth);
         MenuManager.Instance.CreatePopupText(Camera.main.WorldToScreenPoint(transform.position), amount);
     }
 

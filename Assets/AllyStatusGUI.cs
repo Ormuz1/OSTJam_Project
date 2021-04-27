@@ -18,7 +18,6 @@ public class AllyStatusGUI : MonoBehaviour
     {
         nameDisplay.text = status.unitName;
         healthDisplay.text = $"{status.health}/{status.maxHealth}";
-        Debug.Log(status.health / status.maxHealth);
         healthDisplay.color = healthColor.Evaluate((float)status.health / status.maxHealth);
     }
 }

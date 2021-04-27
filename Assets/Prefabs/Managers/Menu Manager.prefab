@@ -355,7 +355,7 @@ MonoBehaviour:
   commandPrefab: {fileID: 5794863363431899366, guid: e5a071241c6924b4e96e57a552f512e9, type: 3}
   statusMenuTransform: {fileID: 8710498864575073527}
   statusInfoPrefab: {fileID: 287384715050122878, guid: afc3a11b017f2fa4bb35789879bd236d, type: 3}
-  fontSize: 72
+  fontSize: 62
   cursorTexture: {fileID: 2800000, guid: bf0b266da60148b4c8da8d650e76c4af, type: 3}
   cursorScale: 3
   cursorOffset: {x: 0, y: 0}

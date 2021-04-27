@@ -81,19 +81,22 @@ public static class CommandCoroutines
     public static IEnumerator Attack(Unit origin, Unit target, float duration)
     {
         origin.state = UnitStates.CannotAction;
+        float windupTime = origin.GetType() == typeof(Ally) ? Ally.ATTACK_ANIMATION_WINDUP_TIME : SimpleEnemy.ATTACK_ANIMATION_WINDUP_TIME;
+        windupTime *= origin.attackAnimation.length / duration;
         if(Time.time < origin.timeUntilCanChangeAnimation)
             yield return new WaitForSeconds(origin.timeUntilCanChangeAnimation - Time.time);
         origin.PlayAnimation(origin.attackAnimation, origin.attackAnimation.length / duration);
-        yield return new WaitForSeconds(duration * Ally.ATTACK_ANIMATION_WINDUP_TIME);
+        yield return new WaitForSeconds(windupTime);
         UnitManager.Instance.unitSfxPlayer.PlayRandom(origin.attackSoundEffects);
         target.OnHealthChanged(origin.damage);
-        yield return new WaitForSeconds(duration - (duration * Ally.ATTACK_ANIMATION_WINDUP_TIME));
+        yield return new WaitForSeconds(duration - windupTime);
         origin.state = UnitStates.CanAction;
     }
 
 
     public static IEnumerator MoveToPosition(Unit origin, Vector3 target, float duration)
     {
+        origin.PlayAnimation(origin.runAnimation);
         Vector3 startPosition = origin.transform.position;
         float t;
         for(float timer = 0; timer < duration; timer += Time.deltaTime)

@@ -18,7 +18,6 @@ public class MenuManager : SingletonBase<MenuManager>
     [Header("Cursor Properties:")]
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private float cursorScale;
-    [SerializeField] private Vector2 cursorOffset;
     [SerializeField] private PopupText popupTextPrefab;
     private Slider[] lifeBars;
     
@@ -55,8 +54,8 @@ public class MenuManager : SingletonBase<MenuManager>
         RectTransform actionRect = commandMenuTransform.GetChild(selectedAction) as RectTransform;
         Vector2 cursorPosition = new Vector2(
             actionRect.position.x - cursorTexture.width * cursorScale,
-            (Screen.height - actionRect.position.y) + cursorTexture.height * .5f
-            ) + cursorOffset;
+            (Screen.height - actionRect.position.y) - cursorTexture.height * cursorScale * .5f
+            );
         cursorRect = new Rect(
             cursorPosition,
             new Vector2(cursorTexture.width, cursorTexture.height) * cursorScale
@@ -106,6 +105,7 @@ public class MenuManager : SingletonBase<MenuManager>
             RectTransform newCommand = Instantiate(commandPrefab, commandMenuTransform) as RectTransform;
             TextMeshProUGUI commandText = newCommand.GetComponentInChildren<TextMeshProUGUI>();
             commandText.text = commands[i].action.GetActionName();
+            commandText.fontSize = fontSize;
         }
         selectedAction = 0;
         CalculateCursorPosition();

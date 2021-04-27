@@ -8,17 +8,21 @@ public class Ally : Unit
     public UnitCommand[] commands;
     public const float ATTACK_ANIMATION_WINDUP_TIME = 0.284f;
     [HideInInspector] public AllyStatusGUI statusDisplay;
-    protected override void OnDeath()
-    {
-        base.OnDeath();
-        StartCoroutine(KnockedOut());
-    }
+
 
     public override void OnHealthChanged(int amount)
     {
         base.OnHealthChanged(amount);
         statusDisplay.UpdateInfo(playerStatus);
     }
+
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        StartCoroutine(KnockedOut());
+    }
+
 
     private IEnumerator KnockedOut()
     {
@@ -29,14 +33,16 @@ public class Ally : Unit
         yield return new WaitUntil(() => state == UnitStates.CanAction);
         state = UnitStates.KnockedOut;
         PlayAnimation(deathAnimation);
+        StopCoroutine(animationReset);
+        MenuManager.Instance.DrawRadialTimer(KO_DURATION, this);
         yield return new WaitForSeconds(deathAnimation.length / 2);
         animator.SetFloat("AnimationSpeed", 0);
         yield return new WaitForSeconds(KO_DURATION - deathAnimation.length);
-        animator.SetFloat("AnimationSpeed", 1);
         StartCoroutine(ResetAnimation(deathAnimation.length / 2));
-        MenuManager.Instance.DrawRadialTimer(KO_DURATION, this);
+        animator.SetFloat("AnimationSpeed", 1);
+        yield return new WaitForSeconds(deathAnimation.length / 2);
         playerStatus.health = playerStatus.maxHealth;
-        lifeBar.value = (float)playerStatus.health / playerStatus.maxHealth;
+        statusDisplay.UpdateInfo(playerStatus);
         state = UnitStates.CanAction;
     }
 }

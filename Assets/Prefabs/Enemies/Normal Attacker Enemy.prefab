@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6713417806097600483}
   - component: {fileID: 6143336507801462770}
   m_Layer: 0
-  m_Name: Strong Attacker Enemy
+  m_Name: Normal Attacker Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6713417806097600492}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4293591689192572516}
   m_Father: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
     unitName: 
     maxHealth: 0
     health: 0
-  damage: 40
+  damage: 25
   state: 0
   attackAnimation: {fileID: 3374748389425109202, guid: a17c2ce273af55747825e7ab89550d83, type: 3}
   runAnimation: {fileID: 0}
@@ -88,7 +88,7 @@ MonoBehaviour:
       duration: 3
     targetPool: 0
     target: 0
-    timeToExecute: 8
+    timeToExecute: 2.8
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0
