@@ -55,6 +55,8 @@ public class Unit : MonoBehaviour
     [HideInInspector] public float timeUntilCanChangeAnimation = 0f;
     protected Coroutine animationReset;
     private bool isWaitingToResetAnimation = false;
+    protected Coroutine currentAction = null;
+
     protected virtual void Awake() 
     {
         playerStatus.health = playerStatus.maxHealth;
@@ -75,16 +77,16 @@ public class Unit : MonoBehaviour
         switch(command.action)
         {
             case UnitActions.Attack:
-                StartCoroutine(CommandCoroutines.Attack(this, commandTarget, command.duration));               
+                currentAction = StartCoroutine(CommandCoroutines.Attack(this, commandTarget, command.duration));               
                 break;
             case UnitActions.Heal:
-                StartCoroutine(CommandCoroutines.StartHealing(this, commandTarget));
+                currentAction = StartCoroutine(CommandCoroutines.StartHealing(this, commandTarget));
                 break;
             case UnitActions.Stop:
                 state = UnitStates.InterruptAction;
                 break;
             case UnitActions.Defend:
-                StartCoroutine(CommandCoroutines.Defend(this, command.duration));
+                currentAction = StartCoroutine(CommandCoroutines.Defend(this, command.duration));
                 break;
             case UnitActions.TimeSpeedUp:
                 TimerManager.Instance.countdownSpeedMultiplier += .25f;
@@ -93,7 +95,7 @@ public class Unit : MonoBehaviour
     }
     
 
-    public void PlayAnimation(AnimationClip clip, float speed = 1f)
+    public void PlayAnimation(AnimationClip clip, float length, float speed = 1f)
     {
         if(Time.time > timeUntilCanChangeAnimation && animator && clip)
         {
@@ -105,6 +107,7 @@ public class Unit : MonoBehaviour
             animationReset = StartCoroutine(ResetAnimation(clip.length));
         }
     }
+
 
     public void PlayAnimationFor(AnimationClip clip, float duration, float speed = 1f)
     {
@@ -133,7 +136,7 @@ public class Unit : MonoBehaviour
             else 
             {
                 UnitManager.Instance.unitSfxPlayer.PlayRandom(hurtSoundEffects);
-                PlayAnimation(hurtAnimation);
+                PlayAnimation(hurtAnimation, hurtAnimation.length);
             }
         }
 
@@ -145,7 +148,12 @@ public class Unit : MonoBehaviour
     protected virtual void OnDeath()
     {
         UnitManager.Instance.unitSfxPlayer.PlayRandom(deathSoundEffect);
+        animator.Play(deathAnimation.name, -1, 0f);
+        if(isWaitingToResetAnimation)
+            StopCoroutine(animationReset);
         if(currentRadialTimer)
             Destroy(currentRadialTimer.gameObject);
+        if(currentAction != null)
+            StopCoroutine(currentAction);
     }
 }

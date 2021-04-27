@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Robot_Beep_00
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 7601616da79b3e84597afe53bcba0dfa, type: 3}
-  volume: 1
+  volume: 0.527

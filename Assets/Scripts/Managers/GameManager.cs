@@ -18,6 +18,7 @@ public class GameManager : SingletonBase<GameManager>
         currentLevel = SceneManager.GetActiveScene().buildIndex;
     }
     
+    
     private void Update() {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
@@ -32,5 +33,12 @@ public class GameManager : SingletonBase<GameManager>
         Debug.Log("You lose");
         Debug.Break();
         CommandManager.Instance.DisableCommandMenu();
+    }
+
+
+    internal void GotoNextLevel()
+    {
+        currentLevel++;
+        SceneManager.LoadScene(levels[currentLevel]);
     }
 }

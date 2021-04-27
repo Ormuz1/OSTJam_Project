@@ -52,12 +52,12 @@ MonoBehaviour:
   animator: {fileID: 0}
   playerStatus:
     unitName: 
-    maxHealth: 0
+    maxHealth: 15
     health: 0
   damage: 15
   state: 0
   attackAnimation: {fileID: 3374748389425109202, guid: a17c2ce273af55747825e7ab89550d83, type: 3}
-  runAnimation: {fileID: 0}
+  runAnimation: {fileID: 3374748389425109202, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
   idleAnimation: {fileID: 3374748389425109202, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
   deathAnimation: {fileID: 3374748389425109202, guid: 1e5530a509e89724192a80e3dee3f538, type: 3}
   hurtAnimation: {fileID: 3374748389425109202, guid: 8544d4448e768ab47be1a4c187f2819b, type: 3}
@@ -89,6 +89,7 @@ MonoBehaviour:
     targetPool: 0
     target: 0
     timeToExecute: 5
+  waitTimeModifierRange: 0.2
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0

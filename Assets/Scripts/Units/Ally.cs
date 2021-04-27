@@ -6,7 +6,7 @@ public class Ally : Unit
 {
     private const float KO_DURATION = 7f;
     public UnitCommand[] commands;
-    public const float ATTACK_ANIMATION_WINDUP_TIME = 0.284f;
+    public const float ATTACK_ANIMATION_WINDUP_TIME = 0.53f;
     [HideInInspector] public AllyStatusGUI statusDisplay;
 
 
@@ -30,9 +30,17 @@ public class Ally : Unit
         {
             state = UnitStates.InterruptAction;
         }
+        else if(state == UnitStates.KnockedOut)
+        {
+            yield break;
+        }
         yield return new WaitUntil(() => state == UnitStates.CanAction);
         state = UnitStates.KnockedOut;
-        PlayAnimation(deathAnimation);
+        if(CommandManager.Instance.activeUnit == this)
+        {
+            CommandManager.Instance.SetActiveUnit();
+        }
+        PlayAnimation(deathAnimation, deathAnimation.length);
         StopCoroutine(animationReset);
         MenuManager.Instance.DrawRadialTimer(KO_DURATION, this);
         yield return new WaitForSeconds(deathAnimation.length / 2);

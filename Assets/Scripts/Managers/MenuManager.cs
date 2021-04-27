@@ -56,6 +56,7 @@ public class MenuManager : SingletonBase<MenuManager>
             actionRect.position.x - cursorTexture.width * cursorScale,
             (Screen.height - actionRect.position.y) - cursorTexture.height * cursorScale * .5f
             );
+        Debug.Log(cursorPosition);
         cursorRect = new Rect(
             cursorPosition,
             new Vector2(cursorTexture.width, cursorTexture.height) * cursorScale
@@ -108,6 +109,7 @@ public class MenuManager : SingletonBase<MenuManager>
             commandText.fontSize = fontSize;
         }
         selectedAction = 0;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(commandMenuTransform);
         CalculateCursorPosition();
         isMenuDrawn = true;
     }

@@ -13,7 +13,7 @@ public class CommandManager : SingletonBase<CommandManager>
     [HideInInspector] public int selectedAction;
     [SerializeField] private UnitCursor unitCursor;
     private Unit commandTarget = null;
-    private CommandMenuState commandMenuState;
+    public CommandMenuState commandMenuState;
 
     public override void Awake()
     {
@@ -86,7 +86,7 @@ public class CommandManager : SingletonBase<CommandManager>
         }
     }
 
-    private void SetActiveUnit()
+    public void SetActiveUnit()
     {
         for(int i = 0; i < allyInstances.Length; i++)
         {
@@ -102,6 +102,8 @@ public class CommandManager : SingletonBase<CommandManager>
         }
         activeUnit = null;
         unitCursor.gameObject.SetActive(false);
+        StopAllCoroutines();
+        CommandManager.Instance.commandMenuState = CommandMenuState.SelectingCommand;
     }
 
     public IEnumerator SelectCommandTarget(Unit[] targetPool)

@@ -214,18 +214,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1887500052848430985, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.b
-      value: 0.7264151
-      objectReference: {fileID: 0}
-    - target: {fileID: 1887500052848430985, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.g
-      value: 0.0054316116
-      objectReference: {fileID: 0}
-    - target: {fileID: 1887500052848430985, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2165038141460410521, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -318,10 +306,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 348.44
       objectReference: {fileID: 0}
-    - target: {fileID: 4556567203358031830, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: radialTimerPrefab
-      value: 
-      objectReference: {fileID: 43557982, guid: cd94b4780ae61c74085d4f2aabedf58b, type: 3}
     - target: {fileID: 4556567203358031831, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_Name
       value: GUI Manager
@@ -549,10 +533,6 @@ PrefabInstance:
     - target: {fileID: 8710498864575073527, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8710498864575073527, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -348.89273
       objectReference: {fileID: 0}
     - target: {fileID: 9183403054831490104, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_ChildControlWidth

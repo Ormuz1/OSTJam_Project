@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Robot_Beer_02
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 1adadf4be701ded428dd15510daaac9f, type: 3}
-  volume: 1
+  volume: 0.527

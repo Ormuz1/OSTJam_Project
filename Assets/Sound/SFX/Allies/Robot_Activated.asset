@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Robot_Activated
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 4b24c0ede445ce2468617834ef6c9de6, type: 3}
-  volume: 1
+  volume: 0.527

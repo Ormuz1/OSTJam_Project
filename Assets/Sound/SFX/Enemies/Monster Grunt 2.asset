@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Monster Grunt 2
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: e3a5104cf82e24d4fb6bdc7b3dff0f8d, type: 3}
-  volume: 1
+  volume: 0.188

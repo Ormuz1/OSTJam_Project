@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58379a38d72784e4ba89e7a3dad4ec4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeBar: {fileID: 0}
   meshBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -52,8 +51,8 @@ MonoBehaviour:
   isGuarding: 0
   animator: {fileID: 0}
   playerStatus:
-    unitName: Test
-    maxHealth: 50
+    unitName: Alpha
+    maxHealth: 100
     health: 0
   damage: 10
   state: 0

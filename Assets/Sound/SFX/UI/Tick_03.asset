@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Tick_03
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 8f3cf747b40b00645a8e2d5461d738f0, type: 3}
-  volume: 1
+  volume: 0.645

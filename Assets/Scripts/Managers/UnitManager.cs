@@ -27,7 +27,8 @@ public class UnitManager : SingletonBase<UnitManager>
     private int currentEncounter = 0;
     [HideInInspector] public Unit[] currentEnemies;
     private readonly Vector3 spaceBetweenEncounters = new Vector3(0, 0, 10);
-    public SoundEffectPlayer unitSfxPlayer;
+    [HideInInspector] public SoundEffectPlayer unitSfxPlayer;
+
 
     public override void Awake()
     {
@@ -67,15 +68,17 @@ public class UnitManager : SingletonBase<UnitManager>
         return unitInstances;
     }
 
+
     public IEnumerator GoToNextEncounter()
     {
         unitSfxPlayer.Play(encounterWinSoundEffect);
         currentEncounter++;
+        TimerManager.Instance.isCountingDown = false;
+        MenuManager.Instance.SetLifeBarMenuActive(false);
+        CommandManager.Instance.DisableCommandMenu();
+        yield return WaitForUnitsIdle(allies);
         if(currentEncounter < enemyEncounters.Length)
         {
-            yield return WaitForUnitsIdle(allies);
-            CommandManager.Instance.DisableCommandMenu();
-            MenuManager.Instance.SetLifeBarMenuActive(false);
             currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow + spaceBetweenEncounters, spaceBetweenEnemies, UnitStates.CannotAction);
             Coroutine lastCoroutine = null;
             for(int i = 0; i < currentEnemies.Length; i++)
@@ -98,9 +101,10 @@ public class UnitManager : SingletonBase<UnitManager>
         }
         else
         {
-            Debug.Log("No more encounters");
+            GameManager.Instance.GotoNextLevel();
         }
     }
+
 
     public IEnumerator WaitForUnitsIdle(Unit[] units)
     {

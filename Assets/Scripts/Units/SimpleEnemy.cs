@@ -16,19 +16,22 @@ public class SimpleEnemy : Unit
         public float timeToExecute;
     }
     [SerializeField] private EnemyInstruction[] enemyInstructions;
+    [SerializeField] private float waitTimeModifierRange = 0.2f;
     private int currentInstruction = 0;
     private float commandTimer = 0;
     private bool shouldDrawTimer = true;
     private Unit nextTarget;
     public const float ATTACK_ANIMATION_WINDUP_TIME = 1.6515f;
+    private float currenActionWaitTime;
     private void Update() 
     {
         if(state == UnitStates.CanAction)
         {
             if(shouldDrawTimer)
             {
+                currenActionWaitTime = enemyInstructions[currentInstruction].timeToExecute + Random.Range(-waitTimeModifierRange, waitTimeModifierRange);
                 nextTarget = ChooseTarget(enemyInstructions[currentInstruction]);
-                currentRadialTimer = MenuManager.Instance.DrawRadialTimer(enemyInstructions[currentInstruction].timeToExecute, this);
+                currentRadialTimer = MenuManager.Instance.DrawRadialTimer(currenActionWaitTime, this);
                 shouldDrawTimer = false;
                 
             }
@@ -45,7 +48,7 @@ public class SimpleEnemy : Unit
                     StartCoroutine(WaitForAvailableTargets()); 
                 }
             }
-            else if(commandTimer < enemyInstructions[currentInstruction].timeToExecute)
+            else if(commandTimer < currenActionWaitTime)
             {
                 commandTimer += Time.deltaTime;
             }
@@ -110,6 +113,14 @@ public class SimpleEnemy : Unit
     protected override void OnDeath()
     {
         base.OnDeath();
+        StartCoroutine(CheckForEndOfEncounter());
+
+    }
+
+
+    private IEnumerator CheckForEndOfEncounter()
+    {
+        yield return new WaitForSeconds(deathAnimation.length);
         UnitManager.Instance.currentEnemies = UnitManager.Instance.currentEnemies.Where(item => item != this).ToArray();
         if(UnitManager.Instance.currentEnemies.Length == 0)
         {

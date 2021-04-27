@@ -112,3 +112,21 @@ public static class GameObjectExtentions
         MonoBehaviour.Destroy(gameObject);
     }
 }
+
+[System.Serializable]
+public struct Range
+{
+    public int min;
+    public int max;
+
+    public Range(int min, int max)
+    {
+        this.min = min;
+        this.max = max;
+    }
+
+    public int Random()
+    {
+        return UnityEngine.Random.Range(min, max + 1);
+    }
+}
