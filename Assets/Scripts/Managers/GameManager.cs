@@ -9,7 +9,7 @@ public class GameManager : SingletonBase<GameManager>
 {
     public SceneReference[] levels;
     [HideInInspector] public int currentLevel;
-    
+    public SceneReference gameOverScene;
     
     public override void Awake()
     {
@@ -17,28 +17,22 @@ public class GameManager : SingletonBase<GameManager>
         DontDestroyOnLoad(this.gameObject);
         currentLevel = SceneManager.GetActiveScene().buildIndex;
     }
-    
-    
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            currentLevel++;
-            SceneManager.LoadScene(levels[currentLevel]);
-        }    
-    }
 
 
     public void Lose()
     {
-        Debug.Log("You lose");
-        Debug.Break();
-        CommandManager.Instance.DisableCommandMenu();
+        SceneManager.LoadScene(gameOverScene.ScenePath);
+        StartCoroutine(ResetLevel());
     }
 
-
+    private IEnumerator ResetLevel()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(levels[currentLevel].ScenePath);
+    }
     internal void GotoNextLevel()
     {
         currentLevel++;
-        SceneManager.LoadScene(levels[currentLevel]);
+        SceneManager.LoadScene(levels[currentLevel].ScenePath);
     }
 }

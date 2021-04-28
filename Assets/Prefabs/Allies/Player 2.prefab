@@ -73,9 +73,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f28201f5733de741a25b6213f12b200, type: 2}
   deathSoundEffect:
   - {fileID: 11400000, guid: c5c82901903f0db45880f2fd9fe9ca84, type: 2}
+  strongAttackSoundEffect: {fileID: 0}
   unitCursorOffset: {x: 0, y: 2.16, z: 0}
   timeUntilCanChangeAnimation: 0
   commands:
+  - action: 0
+    duration: 2
   - action: 1
     duration: 0
   statusDisplay: {fileID: 0}

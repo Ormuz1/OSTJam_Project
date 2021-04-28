@@ -85,7 +85,8 @@ public class Unit : MonoBehaviour
                 currentAction = StartCoroutine(CommandCoroutines.Defend(this, command.duration));
                 break;
             case UnitActions.TimeSpeedUp:
-                TimerManager.Instance.countdownSpeedMultiplier += .25f;
+                currentAction = StartCoroutine(CommandCoroutines.TimeSpeedUp(this));
+
                 break;
             case UnitActions.StrongAttack:
                 currentAction = StartCoroutine(CommandCoroutines.StrongAttack(this, commandTarget, command.duration));
@@ -116,6 +117,8 @@ public class Unit : MonoBehaviour
             StopCoroutine(animationReset);
         animationReset = StartCoroutine(ResetAnimation(duration));
     }
+    
+
     public IEnumerator ResetAnimation(float delay)
     {
         isWaitingToResetAnimation = true;
@@ -155,6 +158,7 @@ public class Unit : MonoBehaviour
         if(currentAction != null)
             StopCoroutine(currentAction);
     }
+
 
     public Bounds GetFullMeshBounds()
     {

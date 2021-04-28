@@ -56,11 +56,11 @@ MonoBehaviour:
     health: 0
   damage: 10
   state: 0
-  attackAnimation: {fileID: 3374748389425109202, guid: a17c2ce273af55747825e7ab89550d83, type: 3}
-  runAnimation: {fileID: 3374748389425109202, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
-  idleAnimation: {fileID: 3374748389425109202, guid: da3b52d285d9a5b499279ef45b11c233, type: 3}
-  deathAnimation: {fileID: 3374748389425109202, guid: 1e5530a509e89724192a80e3dee3f538, type: 3}
-  hurtAnimation: {fileID: 3374748389425109202, guid: 8544d4448e768ab47be1a4c187f2819b, type: 3}
+  attackAnimation: {fileID: -8322462376983536161, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  runAnimation: {fileID: 8985857454278451438, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  idleAnimation: {fileID: 8985857454278451438, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  deathAnimation: {fileID: 8510785830564158209, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  hurtAnimation: {fileID: -2532827258940143776, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
   executingActionSoundEffects:
   - {fileID: 11400000, guid: f2c36b9da70426a4097055f461f3c84e, type: 2}
   - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
@@ -80,6 +80,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3696765784a8c8b4880975539f1c44a7, type: 2}
   - {fileID: 11400000, guid: 9d40f995eaaa7b641b7e5eea07f3402b, type: 2}
   - {fileID: 11400000, guid: b1a79e4d7285ed4448facebbaf422776, type: 2}
+  strongAttackSoundEffect: {fileID: 0}
   unitCursorOffset: {x: 0, y: 0.6, z: 0}
   timeUntilCanChangeAnimation: 0
   enemyInstructions:
@@ -90,6 +91,7 @@ MonoBehaviour:
     target: 0
     timeToExecute: 2.8
   waitTimeModifierRange: 0.5
+  setupWaitRange: 1
 --- !u!1001 &7177465933975872283
 PrefabInstance:
   m_ObjectHideFlags: 0

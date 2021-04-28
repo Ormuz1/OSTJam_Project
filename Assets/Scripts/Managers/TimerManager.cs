@@ -16,7 +16,7 @@ public class TimerManager : SingletonBase<TimerManager>
     private float timer;
     private float startTime;
     [HideInInspector] public bool isCountingDown;
-
+    private int lastSecond;
     public override void Awake() 
     {
         base.Awake();
@@ -46,9 +46,9 @@ public class TimerManager : SingletonBase<TimerManager>
     public void StartTimer(float newTimerValue)
     {
         startTime = newTimerValue;
+        lastSecond = (int)startTime;
         timer = newTimerValue;
         isCountingDown = true;
-        sfxPlayer.StartCoroutine(sfxPlayer.PlayRepeatedly(clockTickingSoundEffects, 1f));
     }
 
 
@@ -63,6 +63,11 @@ public class TimerManager : SingletonBase<TimerManager>
     {
         if(isCountingDown)
         {
+            if((int) timer < lastSecond)
+            {
+                sfxPlayer.PlayRandom(clockTickingSoundEffects);
+                lastSecond = (int)timer;
+            }
             reverbFilter.reverbLevel = Mathf.Lerp(600, -2000, timer / startTime);
             timer -= Time.deltaTime * countdownSpeedMultiplier;
             radial.fillAmount = Mathf.Clamp01(timer / startTime);

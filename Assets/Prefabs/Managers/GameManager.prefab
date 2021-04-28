@@ -44,10 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - sceneAsset: {fileID: 102900000, guid: ab442aea64002b54fa200f6a29b840b0, type: 3}
-    scenePath: Assets/Scenes/Level_1.unity
+  - sceneAsset: {fileID: 102900000, guid: 36515983498e00e4189e5365495068b1, type: 3}
+    scenePath: Assets/Scenes/Environmnt_Testing_DontYouDareOverWriteThisORMUZ!.unity
   - sceneAsset: {fileID: 102900000, guid: 44ae239a4e0632041a23ec007391455c, type: 3}
     scenePath: Assets/Scenes/Level_2.unity
   - sceneAsset: {fileID: 102900000, guid: 25ac8c79fe3aaea43ac207aaced06725, type: 3}
     scenePath: Assets/Scenes/Level_3.unity
   currentLevel: 0
+  gameOverScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 

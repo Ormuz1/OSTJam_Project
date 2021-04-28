@@ -88,25 +88,33 @@ public static class CommandCoroutines
         origin.PlayAnimation(origin.attackAnimation, duration, origin.attackAnimation.length / duration);
         yield return new WaitForSeconds(windupTime);
         UnitManager.Instance.unitSfxPlayer.PlayRandom(origin.attackSoundEffects);
-        target.OnHealthChanged(origin.damage + ATTACK_RANDOM_MODIFIER_RANGE.Random());
+        if(target.playerStatus.health > 0)
+            target.OnHealthChanged(origin.damage + ATTACK_RANDOM_MODIFIER_RANGE.Random());
         yield return new WaitForSeconds(duration - windupTime);
         origin.state = UnitStates.CanAction;
     }
 
     public static IEnumerator StrongAttack(Unit origin, Unit target, float duration)
     {
-        origin.state = UnitStates.CanAction;
+        origin.state = UnitStates.CannotAction;
         float windupTime = Ally.ATTACK_ANIMATION_WINDUP_TIME;
         MenuManager.Instance.DrawRadialTimer(6f, origin);
         yield return new WaitForSeconds(6f);
         origin.PlayAnimation(origin.attackAnimation, origin.attackAnimation.length);
         yield return new WaitForSeconds(windupTime);
         UnitManager.Instance.unitSfxPlayer.Play(origin.strongAttackSoundEffect);
-        target.OnHealthChanged(origin.damage * 2);
+        target.OnHealthChanged(origin.damage * 3);
         yield return new WaitForSeconds(origin.attackAnimation.length - windupTime);
         origin.state = UnitStates.CanAction;
     }
 
+    public static IEnumerator TimeSpeedUp(Unit origin)
+    {
+        origin.PlayAnimation(origin.hurtAnimation, origin.hurtAnimation.length);
+        TimerManager.Instance.countdownSpeedMultiplier += .25f;
+        yield return new WaitForSeconds(origin.hurtAnimation.length);
+        origin.state = UnitStates.CanAction;
+    }
     public static IEnumerator MoveToPosition(Unit origin, Vector3 target, float duration)
     {
         origin.PlayAnimation(origin.runAnimation, origin.runAnimation.length);

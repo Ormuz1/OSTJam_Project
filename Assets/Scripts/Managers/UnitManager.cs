@@ -34,7 +34,7 @@ public class UnitManager : SingletonBase<UnitManager>
     {
         base.Awake();
         unitSfxPlayer = GetComponent<SoundEffectPlayer>();
-        Ally[] existingAllies = FindObjectsOfType<Ally>();
+        Ally[] existingAllies = GetComponentsInChildren<Ally>();
         if(existingAllies.Length == 0)
             allies = CreateUnits(allies, alliesStartingPoint, spaceBetweenAllies).Select(ally => ally as Ally).ToArray();
         else
@@ -76,7 +76,11 @@ public class UnitManager : SingletonBase<UnitManager>
         TimerManager.Instance.isCountingDown = false;
         MenuManager.Instance.SetLifeBarMenuActive(false);
         CommandManager.Instance.DisableCommandMenu();
-        yield return WaitForUnitsIdle(allies);
+        for(int i = 0; i < allies.Length; i++)
+        {
+            allies[i].StopAllCoroutines();
+            allies[i].StartCoroutine(allies[i].ResetAnimation(0.1f));
+        }
         if(currentEncounter < enemyEncounters.Length)
         {
             currentEnemies = CreateUnits(enemyEncounters[currentEncounter].enemies, enemyFrontRow + spaceBetweenEncounters, spaceBetweenEnemies, UnitStates.CannotAction);

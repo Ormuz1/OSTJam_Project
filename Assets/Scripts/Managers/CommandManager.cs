@@ -14,7 +14,7 @@ public class CommandManager : SingletonBase<CommandManager>
     [SerializeField] private UnitCursor unitCursor;
     private Unit commandTarget = null;
     public CommandMenuState commandMenuState;
-
+    private int lastActiveUnitIndex = 0;
     public override void Awake()
     {
         base.Awake();
@@ -88,7 +88,9 @@ public class CommandManager : SingletonBase<CommandManager>
 
     public void SetActiveUnit()
     {
-        for(int i = 0; i < allyInstances.Length; i++)
+        if(lastActiveUnitIndex == allyInstances.Length - 1)
+            lastActiveUnitIndex = 0;
+        for(int i = lastActiveUnitIndex; i < allyInstances.Length; i++)
         {
             if(allyInstances[i].state == UnitStates.CanAction)
             {
@@ -97,9 +99,11 @@ public class CommandManager : SingletonBase<CommandManager>
                 MenuManager.Instance.FillMenu(activeUnit);
                 unitCursor.gameObject.SetActive(true);
                 unitCursor.FollowNewUnit(activeUnit);
+                lastActiveUnitIndex = i;
                 return;
             }
         }
+        lastActiveUnitIndex = 0;
         activeUnit = null;
         unitCursor.gameObject.SetActive(false);
         StopAllCoroutines();

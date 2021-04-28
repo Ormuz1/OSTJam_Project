@@ -22,17 +22,26 @@ public class MenuManager : SingletonBase<MenuManager>
     [SerializeField] private RadialTimer radialTimerPrefab;
     [SerializeField] private Vector2 radialTimerOffset;
     private Slider[] lifeBars;
-    
+    private Canvas canvas;
     private Rect cursorRect;
     private bool isMenuDrawn = false;
 
     [HideInInspector] public int selectedAction;
     private bool drawCursorForTheFirstTime = true;
 
+
+    public override void Awake() {
+        base.Awake();
+        canvas = GetComponent<Canvas>();    
+    }
+
+
     private void Start() 
     {
         DrawLifebars();
     }
+
+
     private void OnGUI() 
     {
         if(isMenuDrawn)
@@ -47,7 +56,6 @@ public class MenuManager : SingletonBase<MenuManager>
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(commandMenuTransform);
         RectTransform actionRect = commandMenuTransform.GetChild(selectedAction) as RectTransform;
-        Debug.Log(actionRect.pivot);
         Vector2 cursorPosition = new Vector2(
             actionRect.position.x - cursorTexture.width * cursorScale,
             (Screen.height - actionRect.position.y) - cursorTexture.height * cursorScale * .5f
@@ -57,6 +65,7 @@ public class MenuManager : SingletonBase<MenuManager>
             new Vector2(cursorTexture.width, cursorTexture.height) * cursorScale
         );
     }
+
 
     public void DrawLifebars()
     {
@@ -83,11 +92,18 @@ public class MenuManager : SingletonBase<MenuManager>
         RadialTimer radialTimer = Instantiate(radialTimerPrefab, transform) as RadialTimer;
         radialTimer.duration = duration;
         Vector3[] unitScreenCorners = unit.meshBounds.GetScreenCorners();
-        radialTimer.GetComponent<RectTransform>().position = new Vector2(
-            unitScreenCorners[1].x,
-            unitScreenCorners[0].y
-        ) + radialTimerOffset;
+        Vector2 screenPos;
+        if(unit.GetType() == typeof(SimpleEnemy))
+        {
+            screenPos = Camera.main.WorldToScreenPoint(unit.transform.position) + (Vector3)radialTimerOffset;
+        }
+        else 
+        {
+            screenPos = Camera.main.WorldToScreenPoint(unit.transform.position) + -(Vector3)radialTimerOffset;
+        }
+
         radialTimer.associatedUnit = unit;
+        radialTimer.GetComponent<RectTransform>().position = screenPos;
         return radialTimer;
     }
 
