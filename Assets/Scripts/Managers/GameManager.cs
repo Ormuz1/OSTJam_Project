@@ -15,7 +15,7 @@ public class GameManager : SingletonBase<GameManager>
     {
         base.Awake();
         DontDestroyOnLoad(this.gameObject);
-        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
     }
 
 

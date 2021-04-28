@@ -34,7 +34,6 @@ public class Ally : Unit
         {
             yield break;
         }
-        yield return new WaitUntil(() => state == UnitStates.CanAction);
         state = UnitStates.KnockedOut;
         if(CommandManager.Instance.activeUnit == this)
         {
