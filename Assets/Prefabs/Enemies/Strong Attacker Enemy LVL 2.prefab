@@ -57,8 +57,8 @@ MonoBehaviour:
   damage: 40
   state: 0
   attackAnimation: {fileID: -8322462376983536161, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
-  runAnimation: {fileID: 8985857454278451438, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
-  idleAnimation: {fileID: 8985857454278451438, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  runAnimation: {fileID: 7043458058946311292, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
+  idleAnimation: {fileID: -2561811837229753924, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
   deathAnimation: {fileID: 8510785830564158209, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
   hurtAnimation: {fileID: -2532827258940143776, guid: 9c6a07d011380e249a3231bfd2e69ffc, type: 3}
   executingActionSoundEffects:

@@ -46693,11 +46693,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8357611397176031133, guid: f3acecc81253ebe48b3a20d7b8db6944, type: 3}
       propertyPath: enemyEncounters.Array.data[0].encounterTime
-      value: 3
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8357611397176031133, guid: f3acecc81253ebe48b3a20d7b8db6944, type: 3}
       propertyPath: enemyEncounters.Array.data[1].encounterTime
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8357611397176031133, guid: f3acecc81253ebe48b3a20d7b8db6944, type: 3}
       propertyPath: enemyEncounters.Array.data[0].enemies.Array.size
@@ -47149,11 +47149,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6214322255475598232, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6214322255475598232, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6214322255475598232, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_SizeDelta.x
@@ -47165,11 +47165,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6214322255475598232, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6214322255475598232, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8710498864575073527, guid: 9e99f7c4e30a670479f80d3034852a88, type: 3}
       propertyPath: m_SizeDelta.x

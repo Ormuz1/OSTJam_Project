@@ -10,7 +10,7 @@ public class GameManager : SingletonBase<GameManager>
     public SceneReference[] levels;
     [HideInInspector] public int currentLevel;
     public SceneReference gameOverScene;
-    
+    public SceneReference gameWinScene;
     public override void Awake()
     {
         base.Awake();
@@ -33,6 +33,18 @@ public class GameManager : SingletonBase<GameManager>
     internal void GotoNextLevel()
     {
         currentLevel++;
+        if(currentLevel > levels.Length)
+        {
+            WinGame();
+        }
         SceneManager.LoadScene(levels[currentLevel].ScenePath);
+    }
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+    private void WinGame()
+    {
+        SceneManager.LoadScene(gameWinScene.ScenePath);
     }
 }

@@ -6,7 +6,7 @@ public enum UnitActions { Attack, Heal, Defend, Stop, TimeSpeedUp, StrongAttack}
 
 public static class CommandCoroutines
 {
-    private const float timeBetweenHeals = 0.8f;
+    private const float timeBetweenHeals = 2f;
     private const float attackMoveDistance = 1f;
     private static readonly Range ATTACK_RANDOM_MODIFIER_RANGE = new Range(-3, 5);
 
@@ -103,7 +103,7 @@ public static class CommandCoroutines
         origin.PlayAnimation(origin.attackAnimation, origin.attackAnimation.length);
         yield return new WaitForSeconds(windupTime);
         UnitManager.Instance.unitSfxPlayer.Play(origin.strongAttackSoundEffect);
-        target.OnHealthChanged(origin.damage * 3);
+        target.OnHealthChanged(origin.damage * 5);
         yield return new WaitForSeconds(origin.attackAnimation.length - windupTime);
         origin.state = UnitStates.CanAction;
     }

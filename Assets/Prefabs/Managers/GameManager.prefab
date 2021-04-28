@@ -52,5 +52,8 @@ MonoBehaviour:
     scenePath: Assets/Scenes/Level_3.unity
   currentLevel: 0
   gameOverScene:
-    sceneAsset: {fileID: 0}
-    scenePath: 
+    sceneAsset: {fileID: 102900000, guid: d04122b8c2141154487490f2b4e74fc3, type: 3}
+    scenePath: Assets/Scenes/GameOver.unity
+  gameWinScene:
+    sceneAsset: {fileID: 102900000, guid: f2c71352f33386447a83ef6e189e3f71, type: 3}
+    scenePath: Assets/Scenes/WinScene.unity
